@@ -21,8 +21,11 @@ public class Board extends JPanel {
 	private JButton [][]buttons;
 	private Map<Cord, Disk> initDisks;
 	
+	private int turn;		//just for debug
+	
 	public Board (int size) {
 		
+		turn = 0;
 	    setLayout(new GridLayout(size,size));
 	    Color color;
 	    Cell cell;
@@ -68,6 +71,7 @@ public class Board extends JPanel {
 	}
 	
 	public void calcWillChange() {
+		System.out.println("\nTurn No." + turn++);
 		for (Map<Integer, Cell> row : allCells.values()) {
 			for (Cell cell : row.values()) {
 				calcWillChange(cell);
@@ -84,6 +88,11 @@ public class Board extends JPanel {
 		willChange.put(Disk.BLACK, new Vector<Cell>());
 		willChange.put(Disk.WHITE, new Vector<Cell>());
 		willChange.put(Disk.NONE, new Vector<Cell>());
+		
+		if (cell.getDisk() != Disk.NONE) {
+			cell.setWillChange(willChange);
+			return;
+		}
 		
 		directionAns = search(cell, Direction.RIGHT);
 		addToMap(directionAns, willChange);
@@ -112,7 +121,7 @@ public class Board extends JPanel {
 		cell.setWillChange(willChange);	
 		
 		if (willChange.get(Disk.BLACK).size() > 0 || willChange.get(Disk.WHITE).size() > 0) {
-			System.out.println(cell.getCord().toString() + " will change " + willChange.toString());
+			System.out.println(cell.getCord().toString() + "(" + cell.getDisk().toString() + ")" + " will change " + willChange.toString());
 		}
 
 	}

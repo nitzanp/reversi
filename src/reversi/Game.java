@@ -34,7 +34,7 @@ public class Game extends JFrame implements ActionListener {
     	
     	super("Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
 
         int size = 8;
         getContentPane().setLayout(new BorderLayout());
