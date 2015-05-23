@@ -12,7 +12,9 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.Map;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,6 +35,7 @@ public class Game extends JFrame implements ActionListener {
     public static int col;
     private Player player1;
     private Player player2;
+    private JPanel boardPanel;
     
 
     public Game(int N, Player player1, Player player2){
@@ -126,15 +129,31 @@ public class Game extends JFrame implements ActionListener {
 
 		public void switchPlayer() {
 			
-			currPlayer = (currPlayer.isEqual(player1)) ? player2 : player1;
-			if(currPlayer.isEqual(player1)){
-				player1Button.setBackground(Color.RED);
-				player2Button.setBackground(SystemColor.text);
+			boolean checkBlack = false, checkWhite = false;
+			for (Map<Integer, Cell> row : board.getAllCells().values()) {
+				for (Cell cell : row.values()) {
+					if (cell.getCellWillChange().size() > 0 && cell.isLegal(Disk.BLACK) && cell.getDisk().equals(Disk.NONE))
+							checkBlack = true;
+					if (cell.getCellWillChange().size() > 0 && cell.isLegal(Disk.WHITE) && cell.getDisk().equals(Disk.NONE))
+							checkWhite = true;
+				}
 			}
-			else{
+			
+			if (currPlayer.isEqual(player1) && checkBlack) {
 				player2Button.setBackground(Color.RED);
 				player1Button.setBackground(SystemColor.text);
+				currPlayer = player2;
 			}
+			else{
+				if (currPlayer.isEqual(player2) && checkWhite){
+					currPlayer = player1;
+					player1Button.setBackground(Color.RED);
+					player2Button.setBackground(SystemColor.text);
+				}
+				else
+					endGame();
+			}
+			
 		}
 		
 		public Player getCurrPlayer(){
@@ -142,6 +161,27 @@ public class Game extends JFrame implements ActionListener {
 		}
 
 
+		public void endGame(){
+			AbstractButton endGameButton = null;
+			if (player1.getScore() > player2.getScore()) {
+				System.out.println("player1 wins");
+				endGameButton = new JButton("Player1 WINS! - click for restart");
+			}
+			else{
+				if (player2.getScore() > player1.getScore()){ 
+					System.out.println("player2 wins");
+					endGameButton = new JButton("Player1 WINS! - click for restart");
+				}
+				else{
+					System.out.println("it's a tie!");
+					endGameButton = new JButton("it's a TIE! - click for restart");
+				}
+			}
+			boardPanel.add(endGameButton);
+			getContentPane().add(endGameButton, BorderLayout.CENTER);
+			endGameButton.addActionListener(this);
+			
+		}
 		public void setScore(int flipped) {
 			 if (currPlayer.isEqual(player1)){
 				 player1.setScore(player1.getScore() + flipped + 1);
