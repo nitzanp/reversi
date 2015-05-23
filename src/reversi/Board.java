@@ -15,15 +15,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Board extends JPanel {
+	private Game game;
 	private final int N;
 	private int [][] array;
 	private Map<Integer, Map<Integer, Cell>> allCells;
 	private JButton [][]buttons;
 	private Map<Cord, Disk> initDisks;
 	
-	public Board (int size) {
-		
+	public Board (int size, Game game) {
+	
 	    setLayout(new GridLayout(size,size));
+	    this.game = game;
 	    Color color;
 	    Cell cell;
 	    Cord cord;
@@ -44,14 +46,16 @@ public class Board extends JPanel {
     		for (int j = 0; j < N; j++) {
     			cord = new Cord(i, j);
     			
-    			cell = new Cell(cord, color, Disk.NONE, this);
+    			cell = new Cell(cord, color, Disk.NONE, this, game);
     			
     			if (color.equals(Color.DARK_GRAY))
     				color = Color.cyan;
     			else
     				color = Color.DARK_GRAY;
+    			
     			row.put(j, cell);
     			add(cell.getButton());
+    		
     		}
     		allCells.put(i,row);
     	}
@@ -175,7 +179,7 @@ public class Board extends JPanel {
 		Cord cord = cell.getCord();
 		Cell neighbour;
 		
-		System.out.println(Game.currPlayer + " changed " + cord.toString());
+		System.out.println(game.getCurrPlayer().getDisk() + " changed " + cord.toString());
 		
 		neighbour = getCellByCord(cord.getNextCord(Direction.UP));
 		calcWillChange(neighbour);

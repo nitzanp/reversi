@@ -48,7 +48,7 @@ public class GraphicMenu extends JFrame implements ActionListener {
 
     	public void actionPerformed(ActionEvent e) {
     	    if (e.getSource().equals(newGame)){
-    	    	Game game = new Game(8);
+    	    	Game game = new Game(8, new Human(Disk.WHITE), new Human(Disk.BLACK));
     	    	this.dispose();
     	        System.out.println("starting new game");
     	        

@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -15,11 +18,11 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-public class Cell implements ActionListener {
+public class Cell implements ActionListener, MouseListener {
 	
 	private static final String BLACK_URL = "https://dl.dropboxusercontent.com/u/30035546/black.png";
 	private static final String WHITE_URL = "https://dl.dropboxusercontent.com/u/30035546/white.png";
-	
+	private Game game;
 	private Cord cord;
 	private Color color;
 	JButton button;
@@ -30,6 +33,7 @@ public class Cell implements ActionListener {
 	Board board;
 	
 	public Cell() {
+		game = game;
 		cord = new Cord();
 		color = Color.WHITE;
 		button = new JButton(cord.getI() + "," + cord.getJ());
@@ -39,7 +43,8 @@ public class Cell implements ActionListener {
 		board = null;
 	}
 	
-	public Cell(Cord cord, Color color, Disk disk, Board board) {
+	public Cell(Cord cord, Color color, Disk disk, Board board, Game game) {
+		this.game = game;
 		this.cord = cord;
 		this.color = color;
 		this.disk = disk;
@@ -50,7 +55,6 @@ public class Cell implements ActionListener {
 		button = new JButton();
 
 		button.setBackground(color);
-		button.setSize(250, 250);
 		button.addActionListener(this);
 		button.setText(cord.toString());
 		button.addMouseListener(this);
@@ -76,8 +80,8 @@ public class Cell implements ActionListener {
 	
 	public void setWillChange(Map<Disk, Vector<Cell>> willChange) {
 		this.willChange = willChange;
-		blackLegal =  (willChange.get(Disk.BLACK).size() > 0) ? true : false;
-		whiteLegal =  (willChange.get(Disk.WHITE).size() > 0) ? true : false;
+			blackLegal =  (willChange.get(Disk.BLACK).size() > 0) ? true : false;
+			whiteLegal =  (willChange.get(Disk.WHITE).size() > 0) ? true : false;
 
 	}
 	
@@ -112,18 +116,26 @@ public class Cell implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//if (e.getActionCommand() == 
-		Disk curr = Game.currPlayer;
+		Disk curr = game.getCurrPlayer().getDisk();
+		int flipped = 0;
 		boolean change = false;
 		for (Cell cell : willChange.get(curr)) {
-			cell.flip();
-			change = true;
+			if (this.getDisk() == Disk.NONE){
+				flipped++;
+				cell.flip();
+				change = true;
+			}
 		}
 		if (change) {
 			this.setDisk(curr);
-		
-			//board.cellChanged(this);
+			
+			for (Cell cell : willChange.get(curr)) {
+		        cell.button.setBackground(color);
+			 }
+			board.cellChanged(this);
 			board.calcWillChange();
-			Game.currPlayer = curr.getOpposite();
+			game.setScore(flipped);
+			game.switchPlayer();
 		}
 
 	}
@@ -132,4 +144,47 @@ public class Cell implements ActionListener {
 	public String toString() {
 		return cord.toString();
 	}
+
+	
+
+
+	@Override
+	  public void mouseExited(MouseEvent e) {
+		  Disk curr = game.getCurrPlayer().getDisk();
+		  for (Cell cell : willChange.get(curr)) {
+	        cell.button.setBackground(color);
+		  }
+	  }
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		Disk curr = game.getCurrPlayer().getDisk();
+		for (Cell cell : willChange.get(curr)) {
+			if (this.getDisk() == Disk.NONE)
+				cell.button.setBackground(Color.pink);
+			
+		}
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+			
+		
+	
 }

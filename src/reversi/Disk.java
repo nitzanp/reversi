@@ -15,4 +15,5 @@ public enum Disk {
 	public boolean isOppisite(Disk disk) {
 		return this.getOpposite() == disk;
 	}
+	
 }
