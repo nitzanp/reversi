@@ -51,8 +51,8 @@ public class Menu extends JFrame implements ActionListener {
     	    	Game game = new Game(8, new Human(Disk.WHITE), new Human(Disk.BLACK));
     	    	this.dispose();
     	        System.out.println("starting new game");
-    	        
     	    }
+    	    
     	    if (e.getSource().equals(exitGame)){
     	    	System.out.println("exiting...");
     	        System.exit(0);
