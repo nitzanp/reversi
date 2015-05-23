@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -60,9 +61,10 @@ public class Game extends JFrame implements ActionListener {
         exitGame = new JButton("EXIT");
         //exitGame.setBounds(500, 50, 220, 50);
         player1Button = new JButton("PLAYER 1: " + player1.getScore());
+        player1Button.setBackground(Color.RED);
         player2Button = new JButton("PLAYER 2: " + player2.getScore());
-        
-        
+        //player2Button.setBackground();
+       
         
         // Add action listeners
         newGame.addActionListener(this);
@@ -100,7 +102,6 @@ public class Game extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 	    if (e.getSource().equals(newGame)){
 	        System.out.println("starting new game");
-	        //TODO number from player
 	        Game game = new Game(8, new Human(Disk.WHITE), new Human(Disk.BLACK));
 	        this.dispose();
 	    }
@@ -110,7 +111,7 @@ public class Game extends JFrame implements ActionListener {
 	    }
 	    if (e.getSource().equals(backToMenu)){
 	    	
-	    	GraphicMenu menu = new GraphicMenu();
+	    	Menu menu = new Menu();
 	    	
 	        this.dispose();
 	    }
@@ -124,8 +125,16 @@ public class Game extends JFrame implements ActionListener {
 
 
 		public void switchPlayer() {
-			currPlayer = (currPlayer.isEqual(player1)) ? player2 : player1;
 			
+			currPlayer = (currPlayer.isEqual(player1)) ? player2 : player1;
+			if(currPlayer.isEqual(player1)){
+				player1Button.setBackground(Color.RED);
+				player2Button.setBackground(SystemColor.text);
+			}
+			else{
+				player2Button.setBackground(Color.RED);
+				player1Button.setBackground(SystemColor.text);
+			}
 		}
 		
 		public Player getCurrPlayer(){

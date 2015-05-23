@@ -138,6 +138,10 @@ public class Board extends JPanel {
 		return allCells.get(cord.getI()).get(cord.getJ());
 	}
 	
+	public Map<Integer, Map<Integer, Cell>> getAllCells(){
+		return allCells;
+	}
+	
 	public Map<Disk, Vector<Cell>> search(Cell cell, Direction dir) {
 		Cord nextCord = cell.getCord().getNextCord(dir);
 		Cell neighbour = getCellByCord(nextCord);
@@ -205,5 +209,7 @@ public class Board extends JPanel {
 		neighbour = getCellByCord(cord.getNextCord(Direction.DOWNRIGHT));
 		calcWillChange(neighbour);
 	}
+	
+
 	
 }

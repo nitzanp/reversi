@@ -10,14 +10,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class GraphicMenu extends JFrame implements ActionListener {
+public class Menu extends JFrame implements ActionListener {
  
     private JButton newGame;
     private JButton exitGame;
 
-    public GraphicMenu(){
+    public Menu(){
     	
-        super("GraphicMenu");
+        super("MainMenu");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(new BorderLayout());
   

@@ -7,6 +7,7 @@ public interface Player {
 	public boolean isEqual(Player player);
 
 	public int getScore();
+	
 	public void setScore(int score);
 		
 

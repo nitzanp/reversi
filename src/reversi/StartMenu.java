@@ -2,6 +2,6 @@ package reversi;
 
 public class StartMenu {
 	public static void main (String[] args) {
-		GraphicMenu g = new GraphicMenu();
+		Menu g = new Menu();
 	}
 }

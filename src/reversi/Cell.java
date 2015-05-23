@@ -79,7 +79,7 @@ public class Cell implements ActionListener, MouseListener {
 	}
 	
 	public void setWillChange(Map<Disk, Vector<Cell>> willChange) {
-		this.willChange = willChange;
+			this.willChange = willChange;
 			blackLegal =  (willChange.get(Disk.BLACK).size() > 0) ? true : false;
 			whiteLegal =  (willChange.get(Disk.WHITE).size() > 0) ? true : false;
 
@@ -120,7 +120,7 @@ public class Cell implements ActionListener, MouseListener {
 		int flipped = 0;
 		boolean change = false;
 		for (Cell cell : willChange.get(curr)) {
-			if (this.getDisk() == Disk.NONE){
+			if (this.getDisk().equals(Disk.NONE)){
 				flipped++;
 				cell.flip();
 				change = true;
@@ -130,14 +130,18 @@ public class Cell implements ActionListener, MouseListener {
 			this.setDisk(curr);
 			
 			for (Cell cell : willChange.get(curr)) {
-		        cell.button.setBackground(color);
+		        cell.button.setBackground(cell.color);
 			 }
 			board.cellChanged(this);
 			board.calcWillChange();
+			
 			game.setScore(flipped);
 			game.switchPlayer();
 		}
 
+	}
+	public Map<Disk, Vector<Cell>>  getCellWillChange (){
+		return willChange;
 	}
 	
 	@Override
@@ -146,14 +150,12 @@ public class Cell implements ActionListener, MouseListener {
 	}
 
 	
-
-
 	@Override
 	  public void mouseExited(MouseEvent e) {
 		  Disk curr = game.getCurrPlayer().getDisk();
-		  for (Cell cell : willChange.get(curr)) {
-	        cell.button.setBackground(color);
-		  }
+		  for (Cell cell : willChange.get(curr)) 
+			  cell.button.setBackground(cell.color);
+		  
 	  }
 
 	@Override
@@ -166,8 +168,10 @@ public class Cell implements ActionListener, MouseListener {
 	public void mouseEntered(MouseEvent e) {
 		Disk curr = game.getCurrPlayer().getDisk();
 		for (Cell cell : willChange.get(curr)) {
-			if (this.getDisk() == Disk.NONE)
+			if (this.getDisk().equals(Disk.NONE)){
 				cell.button.setBackground(Color.pink);
+				
+			}
 			
 		}
 		
