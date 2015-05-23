@@ -2,25 +2,16 @@ package reversi;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Vector;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Board extends JPanel {
 	private Game game;
 	private final int N;
-	private int [][] array;
 	private Map<Integer, Map<Integer, Cell>> allCells;
-	private JButton [][]buttons;
-	private Map<Cord, Disk> initDisks;
 	
 	public Board (int size, Game game) {
 	
@@ -33,8 +24,6 @@ public class Board extends JPanel {
 	    Map<Integer, Cell> row;
 	    allCells = new HashMap<Integer, Map<Integer, Cell>>();
 		N = size;
-		array = new int [N][N];
-		buttons = new JButton[N][N];
 				
 		for (int i = 0; i < N; i++) {
 			row = new HashMap<Integer, Cell>();
@@ -88,6 +77,11 @@ public class Board extends JPanel {
 		willChange.put(Disk.BLACK, new Vector<Cell>());
 		willChange.put(Disk.WHITE, new Vector<Cell>());
 		willChange.put(Disk.NONE, new Vector<Cell>());
+		
+		if (cell.getDisk() != Disk.NONE) {
+			cell.setWillChange(willChange);
+			return;
+		}
 		
 		directionAns = search(cell, Direction.RIGHT);
 		addToMap(directionAns, willChange);

@@ -5,19 +5,15 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 public class Game extends JFrame implements ActionListener {
 	
@@ -60,9 +56,9 @@ public class Game extends JFrame implements ActionListener {
         //backToMenu.setBounds(280, 50, 220, 50);
         exitGame = new JButton("EXIT");
         //exitGame.setBounds(500, 50, 220, 50);
-        player1Button = new JButton("PLAYER 1: " + player1.getScore());
+        player1Button = new JButton(scoreString(player1));
         player1Button.setBackground(Color.RED);
-        player2Button = new JButton("PLAYER 2: " + player2.getScore());
+        player2Button = new JButton(scoreString(player2));
         //player2Button.setBackground();
        
         
@@ -122,16 +118,31 @@ public class Game extends JFrame implements ActionListener {
     			
     		}
     	}
+    	
+    	public int validMoves(Player player) {
+    		int moves = 0;
+    		Disk disk = player.getDisk();
+    		for (Map<Integer, Cell> row : board.getAllCells().values()) {
+    			for (Cell cell : row.values()) {
+    				if (cell.getCellWillChange().get(disk).size() > 0) {
+    					moves++;
+    				}
+    			}
+    		}
+    		return moves;
+    	}
 
 
 		public void switchPlayer() {
-			
 			currPlayer = (currPlayer.isEqual(player1)) ? player2 : player1;
-			if(currPlayer.isEqual(player1)){
+			if (validMoves(currPlayer) == 0) {
+				System.out.println("NO VALID MOVES!");
+			}
+			if (currPlayer.isEqual(player1)){
 				player1Button.setBackground(Color.RED);
 				player2Button.setBackground(SystemColor.text);
 			}
-			else{
+			else {
 				player2Button.setBackground(Color.RED);
 				player1Button.setBackground(SystemColor.text);
 			}
@@ -151,11 +162,19 @@ public class Game extends JFrame implements ActionListener {
 				 player2.setScore(player2.getScore() + flipped + 1);
 				 player1.setScore(player1.getScore() - flipped);
 			 }
-			 player1Button.setText("PLAYER 1: " + player1.getScore());
-			 player2Button.setText("PLAYER 2: " + player2.getScore());
-
-
-			
+//			 player1Button.setText("PLAYER 1: " + player1.getScore());
+//			 player2Button.setText("PLAYER 2: " + player2.getScore());
+			 player1Button.setText(scoreString(player1));
+			 player2Button.setText(scoreString(player2));
+		}
+		
+		
+		public String scoreString(Player player) {
+			StringBuilder sb = new StringBuilder();
+			String name = (player == player1) ? "PLAYER1" : "PLAYER2";
+			sb.append(name).append(" - ").append(player.getDisk().toString());
+			sb.append(" : ").append(player.getScore());
+			return sb.toString();			
 		}
 	
    

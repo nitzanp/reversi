@@ -1,14 +1,9 @@
 package reversi;
 
 import java.awt.Color;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,22 +13,23 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-public class Cell implements ActionListener, MouseListener {
+public class Cell implements MouseListener {
 	
 	private static final String BLACK_URL = "https://dl.dropboxusercontent.com/u/30035546/black.png";
 	private static final String WHITE_URL = "https://dl.dropboxusercontent.com/u/30035546/white.png";
 	private Game game;
 	private Cord cord;
 	private Color color;
-	JButton button;
-	Disk disk;
-	Map<Disk, Vector<Cell>> willChange;
-	boolean whiteLegal;
-	boolean blackLegal;
-	Board board;
+	private JButton button;
+	private Disk disk;
+	private Map<Disk, Vector<Cell>> willChange;
+	private boolean whiteLegal;
+	private boolean blackLegal;
+	private Board board;
+	private Vector<Cell> changed;
 	
 	public Cell() {
-		game = game;
+		//game = game;
 		cord = new Cord();
 		color = Color.WHITE;
 		button = new JButton(cord.getI() + "," + cord.getJ());
@@ -52,10 +48,11 @@ public class Cell implements ActionListener, MouseListener {
 		this.blackLegal = false;
 		this.willChange = new HashMap<Disk, Vector<Cell>>();
 		this.board = board;
+		this.changed = new Vector<Cell>();
 		button = new JButton();
 
 		button.setBackground(color);
-		button.addActionListener(this);
+		//button.addActionListener(this);
 		button.setText(cord.toString());
 		button.addMouseListener(this);
 		setIconByDisk(disk);
@@ -111,37 +108,19 @@ public class Cell implements ActionListener, MouseListener {
 	
 	public void flip() {
 		setDisk(this.disk.getOpposite());
+		backToOrigin();
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		//if (e.getActionCommand() == 
-		Disk curr = game.getCurrPlayer().getDisk();
-		int flipped = 0;
-		boolean change = false;
-		for (Cell cell : willChange.get(curr)) {
-			if (this.getDisk().equals(Disk.NONE)){
-				flipped++;
-				cell.flip();
-				change = true;
-			}
-		}
-		if (change) {
-			this.setDisk(curr);
-			
-			for (Cell cell : willChange.get(curr)) {
-		        cell.button.setBackground(cell.color);
-			 }
-			board.cellChanged(this);
-			board.calcWillChange();
-			
-			game.setScore(flipped);
-			game.switchPlayer();
-		}
-
-	}
 	public Map<Disk, Vector<Cell>>  getCellWillChange (){
 		return willChange;
+	}
+	
+	public void markAsLegal() {
+		button.setBackground(Color.pink);
+	}
+	
+	public void backToOrigin() {
+		button.setBackground(color);
 	}
 	
 	@Override
@@ -151,29 +130,77 @@ public class Cell implements ActionListener, MouseListener {
 
 	
 	@Override
-	  public void mouseExited(MouseEvent e) {
-		  Disk curr = game.getCurrPlayer().getDisk();
-		  for (Cell cell : willChange.get(curr)) 
-			  cell.button.setBackground(cell.color);
-		  
-	  }
+	public void mouseExited(MouseEvent e) {
+		Disk curr = game.getCurrPlayer().getDisk();
+//		for (Cell cell : willChange.get(curr)) {
+//			cell.backToOrigin();
+//		}
+
+//		boolean legal = (curr == Disk.BLACK && blackLegal) || (curr == Disk.WHITE && whiteLegal);
+
+		if (changed.size() > 0) {
+			for (Cell cell : changed) {
+				cell.backToOrigin();
+			}
+			changed = new Vector<Cell>();
+		}
+		//			if (legal) {
+		else {
+			for (Cell cell : willChange.get(curr)) {
+				cell.backToOrigin();
+			}
+			backToOrigin();
+		}
+
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		Disk curr = game.getCurrPlayer().getDisk();
+		//int flipped = 0;
+		boolean change = false;
+		for (Cell cell : willChange.get(curr)) {
+			if (this.getDisk().equals(Disk.NONE)){
+				//flipped++;
+				cell.flip();
+				changed.add(cell);
+				change = true;
+			}
+		}
+		if (change) {
+			this.setDisk(curr);
+			backToOrigin();
+			
+			for (Cell cell : willChange.get(curr)) {
+		        cell.button.setBackground(cell.color);
+			}
+			board.cellChanged(this);
+			board.calcWillChange();
+			
+			//game.setScore(flipped);
+			game.setScore(changed.size());
+			game.switchPlayer();
+		}		
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		Disk curr = game.getCurrPlayer().getDisk();
-		for (Cell cell : willChange.get(curr)) {
-			if (this.getDisk().equals(Disk.NONE)){
-				cell.button.setBackground(Color.pink);
-				
+		boolean legal = (curr == Disk.BLACK && blackLegal) || (curr == Disk.WHITE && whiteLegal);
+		if (legal) {
+			for (Cell cell : willChange.get(curr)) {
+				cell.markAsLegal();
 			}
-			
+			markAsLegal();
 		}
+		
+		
+//		for (Cell cell : willChange.get(curr)) {
+//			if (this.getDisk().equals(Disk.NONE)){
+//				cell.button.setBackground(Color.pink);
+//			}
+//			
+//		}
 		
 	}
 
