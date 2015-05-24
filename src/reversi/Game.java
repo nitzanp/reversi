@@ -42,7 +42,7 @@ public class Game extends JFrame implements ActionListener {
         
         //setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
 
-        int size = 8;
+        int size = 4;
         getContentPane().setLayout(new BorderLayout());
         this.pass = 0;
         board = new Board(size, this);
@@ -206,24 +206,31 @@ public class Game extends JFrame implements ActionListener {
 
 
 		public void endGame(){
-			AbstractButton endGameButton = null;
+		    String name;
 			if (player1.getScore() > player2.getScore()) {
 				System.out.println("player1 wins");
-				endGameButton = new JButton("Player1 WINS! - click for restart");
+				name = "Player1 WINS! - click for restart";
 			}
 			else{
 				if (player2.getScore() > player1.getScore()){ 
 					System.out.println("player2 wins");
-					endGameButton = new JButton("Player1 WINS! - click for restart");
+					name ="Player1 WINS! - click for restart";
 				}
 				else{
 					System.out.println("it's a tie!");
-					endGameButton = new JButton("it's a TIE! - click for restart");
+					name = "it's a TIE! - click for restart";
 				}
 			}
-			boardPanel.add(endGameButton);
-			getContentPane().add(endGameButton, BorderLayout.CENTER);
-			endGameButton.addActionListener(this);
+			JButton b = new JButton(name);
+			b.addActionListener(new java.awt.event.ActionListener() {
+			        public void actionPerformed(java.awt.event.ActionEvent evt) {
+			        	Game game = new Game(8, new Human(Disk.WHITE), new Human(Disk.BLACK));
+		    	        System.out.println("starting new game");
+		    	        dispose();
+			        }
+			 });
+			//jLayeredPane2.invalidate();
+			getContentPane().add(b, BorderLayout.SOUTH);
 			
 		}
 		public void setScore(int flipped) {
@@ -248,6 +255,12 @@ public class Game extends JFrame implements ActionListener {
 			sb.append(name).append(" - ").append(player.getDisk().toString());
 			sb.append(" : ").append(player.getScore());
 			return sb.toString();			
+		}
+		
+		public void addButton(String name) {
+		   
+
+		   
 		}
 	
    

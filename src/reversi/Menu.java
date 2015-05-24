@@ -45,7 +45,7 @@ public class Menu extends JFrame implements ActionListener {
         pack();
         setVisible(true);
     }
-
+    	
     	public void actionPerformed(ActionEvent e) {
     	    if (e.getSource().equals(newGame)){
     	    	Game game = new Game(8, new Human(Disk.WHITE), new Human(Disk.BLACK));
