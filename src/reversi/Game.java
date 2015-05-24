@@ -9,10 +9,6 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-<<<<<<< HEAD
-import java.awt.event.WindowEvent;
-=======
->>>>>>> origin/master
 import java.util.Map;
 
 import javax.swing.AbstractButton;
@@ -36,6 +32,8 @@ public class Game extends JFrame implements ActionListener {
     private Player player2;
     private JPanel boardPanel;
     
+    private int pass;		//TODO - temp
+    
 
     public Game(int N, Player player1, Player player2){
     	
@@ -46,6 +44,7 @@ public class Game extends JFrame implements ActionListener {
 
         int size = 8;
         getContentPane().setLayout(new BorderLayout());
+        this.pass = 0;
         board = new Board(size, this);
         this.player1 = player1;
         this.player2 = player2;
@@ -130,7 +129,7 @@ public class Game extends JFrame implements ActionListener {
     		Disk disk = player.getDisk();
     		for (Map<Integer, Cell> row : board.getAllCells().values()) {
     			for (Cell cell : row.values()) {
-    				if (cell.getCellWillChange().get(disk).size() > 0) {
+    				if (cell.getCellWillChange().get(disk).size() > 0 && cell.isLegal(disk) && cell.isEmpty()) {
     					moves++;
     				}
     			}
@@ -140,43 +139,64 @@ public class Game extends JFrame implements ActionListener {
 
 
 		public void switchPlayer() {
-<<<<<<< HEAD
 			
-			boolean checkBlack = false, checkWhite = false;
-			for (Map<Integer, Cell> row : board.getAllCells().values()) {
-				for (Cell cell : row.values()) {
-					if (cell.getCellWillChange().size() > 0 && cell.isLegal(Disk.BLACK) && cell.getDisk().equals(Disk.NONE))
-							checkBlack = true;
-					if (cell.getCellWillChange().size() > 0 && cell.isLegal(Disk.WHITE) && cell.getDisk().equals(Disk.NONE))
-							checkWhite = true;
-				}
-			}
+			boolean checkBlack, checkWhite;
+//			for (Map<Integer, Cell> row : board.getAllCells().values()) {
+//				for (Cell cell : row.values()) {
+//					if (cell.getCellWillChange().size() > 0 && cell.isLegal(Disk.BLACK) && cell.getDisk().equals(Disk.NONE))
+//							checkBlack = true;
+//					if (cell.getCellWillChange().size() > 0 && cell.isLegal(Disk.WHITE) && cell.getDisk().equals(Disk.NONE))
+//							checkWhite = true;
+//				}
+//			}
 			
-			if (currPlayer.isEqual(player1) && checkBlack) {
-=======
+			checkWhite = (validMoves(player1) > 0) ? true : false;
+			checkBlack = (validMoves(player2) > 0) ? true : false;
+			
+//			currPlayer = (currPlayer.isEqual(player1)) ? player2 : player1;
+//			if (validMoves(currPlayer) == 0) {
+//				System.out.println("NO VALID MOVES!");		//TODO - popup a message
+//				//switchPlayer();
+//			}
+//			
+//			if (currPlayer.isEqual(player1) && checkBlack) {
+//				player2Button.setBackground(Color.RED);
+//				player1Button.setBackground(SystemColor.text);
+//				currPlayer = player2;
+//			}
+//			else {
+//				if (currPlayer.isEqual(player2) && checkWhite){
+//					currPlayer = player1;
+//					player1Button.setBackground(Color.RED);
+//					player2Button.setBackground(SystemColor.text);
+//				}
+//				else
+//					endGame();
+//			}
+			
 			currPlayer = (currPlayer.isEqual(player1)) ? player2 : player1;
 			if (validMoves(currPlayer) == 0) {
-				System.out.println("NO VALID MOVES!");
+				System.out.println("NO VALID MOVES!");		//TODO - popup a message
+				pass++;
+				if (pass == 2) {
+					System.out.println("GAME ENDED!!");
+					endGame();
+				}
+				else {
+					switchPlayer();
+				}
+				
 			}
 			if (currPlayer.isEqual(player1)){
 				player1Button.setBackground(Color.RED);
 				player2Button.setBackground(SystemColor.text);
 			}
 			else {
->>>>>>> origin/master
 				player2Button.setBackground(Color.RED);
 				player1Button.setBackground(SystemColor.text);
 				currPlayer = player2;
 			}
-			else{
-				if (currPlayer.isEqual(player2) && checkWhite){
-					currPlayer = player1;
-					player1Button.setBackground(Color.RED);
-					player2Button.setBackground(SystemColor.text);
-				}
-				else
-					endGame();
-			}
+
 			
 		}
 		

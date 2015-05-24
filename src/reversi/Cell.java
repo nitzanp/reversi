@@ -90,6 +90,10 @@ public class Cell implements MouseListener {
 		return false;
 	}
 	
+	public boolean isEmpty(){
+		return this.disk == Disk.NONE;
+	}
+	
 	public void setIconByDisk(Disk disk) {
 		if (disk != Disk.NONE) {
 			URL url = null;
