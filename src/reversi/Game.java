@@ -212,16 +212,19 @@ public class Game extends JFrame implements ActionListener {
 					name = "it's a TIE! - click for restart";
 				}
 			}
+			JPanel displayB = new JPanel();
+			
 			JButton b = new JButton(name);
+			displayB.add(b);
 			b.addActionListener(new java.awt.event.ActionListener() {
 			        public void actionPerformed(java.awt.event.ActionEvent evt) {
 			        	Game game = new Game(8, new Human(Disk.WHITE), new Human(Disk.BLACK));
-		    	        System.out.println("starting new game");
 		    	        dispose();
 			        }
 			 });
 			//jLayeredPane2.invalidate();
-			getContentPane().add(b, BorderLayout.SOUTH);
+			board.setVisible(false);
+			getContentPane().add(displayB, BorderLayout.CENTER);
 			
 		}
 		public void setScore(int flipped) {
