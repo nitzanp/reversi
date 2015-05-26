@@ -1,45 +1,66 @@
 package reversi;
 
+
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
-public class Menu extends JFrame implements ActionListener {
- 
+public class NewGame extends JFrame implements ActionListener {
+	
+	private Board board;
     private JButton newGame;
-    private JButton resumeGame;
+    private JButton backToMenu;
     private JButton exitGame;
-    private Game game;
+    public static int row;
+    public static int col;
 
-    public Menu(Game game){
+    public NewGame(int N){
     	
-        super("MainMenu");
-        this.game = game;
+        super("NewGame");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+
         getContentPane().setLayout(new BorderLayout());
-  
+        board = new Board(8);
+       
+        
         // Create buttons
         newGame = new JButton("NEW GAME");
-        resumeGame = new JButton("RESUME GAME");
+        newGame.setBounds(60, 50, 220, 50);
+        backToMenu = new JButton("MENU");
+        backToMenu.setBounds(280, 50, 220, 50);
         exitGame = new JButton("EXIT");
+        exitGame.setBounds(500, 50, 220, 50);
+        
+        
         
         // Add action listeners
         newGame.addActionListener(this);
         exitGame.addActionListener(this);
-        resumeGame.addActionListener(this);
-        
+        backToMenu.addActionListener(this);
+     
+
         // Add all objects to Content Pane
-        getContentPane().setLayout(new FlowLayout());
-        getContentPane().add(newGame);
+        
         getContentPane().add(exitGame);
-        getContentPane().add(resumeGame);
-      
+        getContentPane().add(newGame);
+        getContentPane().add(backToMenu);
+        getContentPane().add(board);
+        
+        
         //Place at center
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         int jframeWidth = this.getSize().width;
@@ -47,24 +68,30 @@ public class Menu extends JFrame implements ActionListener {
         int X = (dim.width - jframeWidth)/2 - 100;
         int Y = (dim.height - jframeHeight)/4;
         this.setLocation(X, Y);
-      
+ 
         pack();
         setVisible(true);
     }
     	
+    	
     	public void actionPerformed(ActionEvent e) {
     	    if (e.getSource().equals(newGame)){
-    	    	Game game = new Game(8, new Human(Disk.WHITE), new Human(Disk.BLACK));
-    	    	this.dispose();
+    	        System.out.println("starting new game");
+    	        //TODO number from player
+    	        NewGame game = new NewGame(8);
+    	        this.dispose();
     	    }
-    	    
     	    if (e.getSource().equals(exitGame)){
+    	    	System.out.println("exiting...");
     	        System.exit(0);
     	    }
-    	    if (e.getSource().equals(resumeGame)){
-    	    	game.setVisible(true);
-    	    	this.dispose();
+    	    if (e.getSource().equals(backToMenu)){
+    	    	
+    	    	GraphicMenu menu = new GraphicMenu();
+    	    	
+    	        this.dispose();
     	    }
     	}
-  
+
+   
 }

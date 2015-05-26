@@ -102,27 +102,18 @@ public class Game extends JFrame implements ActionListener {
     	
 	public void actionPerformed(ActionEvent e) {
 	    if (e.getSource().equals(newGame)){
-	        System.out.println("starting new game");
 	        Game game = new Game(8, new Human(Disk.WHITE), new Human(Disk.BLACK));
 	        this.dispose();
 	    }
 	    if (e.getSource().equals(exitGame)){
-	    	System.out.println("exiting...");
 	        System.exit(0);
 	    }
 	    if (e.getSource().equals(backToMenu)){
-	    	
-	    	Menu menu = new Menu();
-	    	
-	        this.dispose();
+	    	Menu menu = new Menu(this);	
+	        this.setVisible(false);
 	    }
 	}
     	
-    	public void playGame () {
-    		while(true) {
-    			
-    		}
-    	}
     	
     	public int validMoves(Player player) {
     		int moves = 0;

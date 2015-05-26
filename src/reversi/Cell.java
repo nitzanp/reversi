@@ -3,6 +3,7 @@ package reversi;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -12,11 +13,11 @@ import java.util.Vector;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class Cell implements MouseListener {
 	
-	private static final String BLACK_URL = "https://dl.dropboxusercontent.com/u/30035546/black.png";
-	private static final String WHITE_URL = "https://dl.dropboxusercontent.com/u/30035546/white.png";
+
 	private Game game;
 	private Cord cord;
 	private Color color;
@@ -95,15 +96,16 @@ public class Cell implements MouseListener {
 	}
 	
 	public void setIconByDisk(Disk disk) {
+		String temp = this.getClass().getClassLoader().getResource("").getPath(); //need to check if works in every computer
+		System.out.println(temp);
+		String BLACK_PIC = temp + "black.png";
+	    String WHITE_PIC = temp + "white.png";
 		if (disk != Disk.NONE) {
-			URL url = null;
-			String urlStr = (disk == Disk.BLACK) ? BLACK_URL : WHITE_URL;
-			try {
-				url = new URL(urlStr);
-			} catch (MalformedURLException e) {	}
-			Icon icon = new ImageIcon(url);
-			//ImageIcon icon = new ImageIcon("black.png");
-			button.setIcon(icon);
+			String pic = (disk == Disk.BLACK) ? BLACK_PIC : WHITE_PIC;
+			ImageIcon img = new ImageIcon(pic);
+			button.setIcon(img);
+			
+			
 		}
 		else {
 			button.setIcon(null);
