@@ -62,8 +62,10 @@ public class Menu extends JFrame implements ActionListener {
     	        System.exit(0);
     	    }
     	    if (e.getSource().equals(resumeGame)){
-    	    	game.setVisible(true);
-    	    	this.dispose();
+    	    	if(game != null){
+    	    		game.setVisible(true);
+    	    		this.dispose();
+    	    	}
     	    }
     	}
   
