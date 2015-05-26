@@ -51,6 +51,9 @@ public class Board extends JPanel {
 		calcInit();
 		calcWillChange();
 	}
+	public Game getGame(){
+		return this.game;
+	}
 	
 	private void calcInit() {
 		int middle = N / 2;

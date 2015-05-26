@@ -15,7 +15,6 @@ public class Menu extends JFrame implements ActionListener {
     private JButton newGame;
     private JButton resumeGame;
     private JButton exitGame;
-    private JButton settings;
     private Game game;
 
     public Menu(Game game){
@@ -28,22 +27,18 @@ public class Menu extends JFrame implements ActionListener {
         // Create buttons
         newGame = new JButton("NEW GAME");
         resumeGame = new JButton("RESUME GAME");
-        settings = new JButton("SETTINGS");
         exitGame = new JButton("EXIT");
         
         // Add action listeners
         newGame.addActionListener(this);
         exitGame.addActionListener(this);
         resumeGame.addActionListener(this);
-        settings.addActionListener(this);
         
         // Add all objects to Content Pane
         getContentPane().setLayout(new FlowLayout());
         getContentPane().add(newGame);
-        getContentPane().add(resumeGame);
-        getContentPane().add(settings);
         getContentPane().add(exitGame);
-
+        getContentPane().add(resumeGame);
       
         //Place at center
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -58,31 +53,8 @@ public class Menu extends JFrame implements ActionListener {
     }
     	
     	public void actionPerformed(ActionEvent e) {
-//    		switch (e.getSource()) {
-//			case newGame:
-//    	    	Game game = new Game(8, new Human(Disk.WHITE, "fds"), new Human(Disk.BLACK, "fs"));
-//    	    	this.dispose();
-//				break;
-//			
-//			case exitGame:
-//				System.exit(0);
-//				
-//			case resumeGame:
-//    	    	if(game != null) {
-//		    		game.setVisible(true);
-//		    		this.dispose();
-//    	    	}
-//	    		break;
-//	    	
-//	    	case settings:
-//	    		new SettingsFrame();
-//
-//			default:
-//				break;
-//			}
- 
     	    if (e.getSource().equals(newGame)){
-    	    	Game game = new Game(8, new Human(Disk.WHITE, "fds"), new Human(Disk.BLACK, "fs"));
+    	    	Game game = new Game(8, new Human(Disk.WHITE), new Computer(Disk.BLACK));
     	    	this.dispose();
     	    }
     	    
@@ -94,9 +66,6 @@ public class Menu extends JFrame implements ActionListener {
     	    		game.setVisible(true);
     	    		this.dispose();
     	    	}
-    	    }
-    	    if (e.getSource().equals(settings)) {
-    	    	new SettingsFrame();
     	    }
     	}
   

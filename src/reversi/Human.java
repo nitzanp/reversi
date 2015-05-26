@@ -2,14 +2,12 @@ package reversi;
 
 public class Human implements Player {
 	
-	Disk disk;
-	int score;
-	String name;
+	private Disk disk;
+	private int score;
 	
-	public Human(Disk disk, String name) {
-		this.disk = disk;
-		this.name = name;
-		this.score = 2;
+	public Human(Disk disk){
+		this.disk=disk;
+		score = 2;
 	}
 
 	public Disk getDisk() {
@@ -29,8 +27,8 @@ public class Human implements Player {
 	}
 
 	@Override
-	public String getName() {
-		return null;
+	public boolean getComputer() {
+		return false;
 	}
 	
 }

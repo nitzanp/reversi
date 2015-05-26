@@ -10,6 +10,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
@@ -41,8 +42,8 @@ public class Game extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         //setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
-        
-        int size = Settings.instance().getN();
+
+        int size = 4;
         getContentPane().setLayout(new BorderLayout());
         this.pass = 0;
         board = new Board(size, this);
@@ -102,7 +103,7 @@ public class Game extends JFrame implements ActionListener {
     	
 	public void actionPerformed(ActionEvent e) {
 	    if (e.getSource().equals(newGame)){
-	        Game game = new Game(8, new Human(Disk.WHITE, "uri"), new Human(Disk.BLACK, "nitzan"));
+	        Game game = new Game(8, new Human(Disk.WHITE), new Computer(Disk.BLACK));
 	        this.dispose();
 	    }
 	    if (e.getSource().equals(exitGame)){
@@ -131,7 +132,42 @@ public class Game extends JFrame implements ActionListener {
 
 		public void switchPlayer() {
 			
+			boolean checkBlack, checkWhite;
+//			for (Map<Integer, Cell> row : board.getAllCells().values()) {
+//				for (Cell cell : row.values()) {
+//					if (cell.getCellWillChange().size() > 0 && cell.isLegal(Disk.BLACK) && cell.getDisk().equals(Disk.NONE))
+//							checkBlack = true;
+//					if (cell.getCellWillChange().size() > 0 && cell.isLegal(Disk.WHITE) && cell.getDisk().equals(Disk.NONE))
+//							checkWhite = true;
+//				}
+//			}
+			
+			checkWhite = (validMoves(player1) > 0) ? true : false;
+			checkBlack = (validMoves(player2) > 0) ? true : false;
+			
+//			currPlayer = (currPlayer.isEqual(player1)) ? player2 : player1;
+//			if (validMoves(currPlayer) == 0) {
+//				System.out.println("NO VALID MOVES!");		//TODO - popup a message
+//				//switchPlayer();
+//			}
+//			
+//			if (currPlayer.isEqual(player1) && checkBlack) {
+//				player2Button.setBackground(Color.RED);
+//				player1Button.setBackground(SystemColor.text);
+//				currPlayer = player2;
+//			}
+//			else {
+//				if (currPlayer.isEqual(player2) && checkWhite){
+//					currPlayer = player1;
+//					player1Button.setBackground(Color.RED);
+//					player2Button.setBackground(SystemColor.text);
+//				}
+//				else
+//					endGame();
+//			}
+		
 			currPlayer = (currPlayer.isEqual(player1)) ? player2 : player1;
+				
 			if (validMoves(currPlayer) == 0) {
 				System.out.println("NO VALID MOVES!");		//TODO - popup a message
 				pass++;
@@ -146,13 +182,23 @@ public class Game extends JFrame implements ActionListener {
 			}
 			if (currPlayer.isEqual(player1)){
 				player1Button.setBackground(Color.RED);
-				player2Button.setBackground(SystemColor.text);
+				player2Button.setBackground(SystemColor.text);	
+				
+				if(currPlayer.getComputer()){
+					((Computer) currPlayer).play(board);
+				}
+				
 			}
 			else {
 				player2Button.setBackground(Color.RED);
 				player1Button.setBackground(SystemColor.text);
-				currPlayer = player2;
+				
+				if(currPlayer.getComputer()){
+					((Computer) currPlayer).play(board);
+				}
+				
 			}
+			pass = 0;
 
 			
 		}
@@ -171,7 +217,7 @@ public class Game extends JFrame implements ActionListener {
 			else{
 				if (player2.getScore() > player1.getScore()){ 
 					System.out.println("player2 wins");
-					name ="Player1 WINS! - click for restart";
+					name ="Player2 WINS! - click for restart";
 				}
 				else{
 					System.out.println("it's a tie!");
@@ -182,9 +228,10 @@ public class Game extends JFrame implements ActionListener {
 			
 			JButton b = new JButton(name);
 			displayB.add(b);
+			displayB.setVisible(true);
 			b.addActionListener(new java.awt.event.ActionListener() {
 			        public void actionPerformed(java.awt.event.ActionEvent evt) {
-			        	Game game = new Game(8, new Human(Disk.WHITE, "h"), new Human(Disk.BLACK, "j"));
+			        	Game game = new Game(8, new Human(Disk.WHITE), new Computer(Disk.BLACK));
 		    	        dispose();
 			        }
 			 });
@@ -211,7 +258,7 @@ public class Game extends JFrame implements ActionListener {
 		
 		public String scoreString(Player player) {
 			StringBuilder sb = new StringBuilder();
-			String name = (player == player1) ? Settings.instance().getPlayer1Name() : Settings.instance().getPlayer2Name();
+			String name = (player == player1) ? "PLAYER1" : "PLAYER2";
 			sb.append(name).append(" - ").append(player.getDisk().toString());
 			sb.append(" : ").append(player.getScore());
 			return sb.toString();			

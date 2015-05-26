@@ -10,7 +10,7 @@ public interface Player {
 	
 	public void setScore(int score);
 	
-	public String getName();
+	public boolean getComputer();
 		
 
 }
