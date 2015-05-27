@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -22,12 +23,17 @@ public class Menu extends JFrame implements ActionListener {
         super("MainMenu");
         this.game = game;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new BorderLayout());
+        //getContentPane().setLayout(new BorderLayout());
+        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
   
         // Create buttons
         newGame = new JButton("NEW GAME");
         resumeGame = new JButton("RESUME GAME");
         exitGame = new JButton("EXIT");
+        
+        if (game == null) {
+        	resumeGame.setEnabled(false);
+        }
         
         // Add action listeners
         newGame.addActionListener(this);
@@ -53,8 +59,14 @@ public class Menu extends JFrame implements ActionListener {
     }
     	
     	public void actionPerformed(ActionEvent e) {
+<<<<<<< HEAD
     	    if (e.getSource().equals(newGame)){
     	    	Game game = new Game(8, new Human(Disk.WHITE), new Computer(Disk.BLACK));
+=======
+ 
+    	    if (e.getSource().equals(newGame)){
+    	    	this.game = new Game(Settings.instance().getBoardSize(), new Human(Disk.WHITE), new Human(Disk.BLACK));
+>>>>>>> origin/master
     	    	this.dispose();
     	    }
     	    
@@ -67,6 +79,13 @@ public class Menu extends JFrame implements ActionListener {
     	    		this.dispose();
     	    	}
     	    }
+<<<<<<< HEAD
+=======
+    	    if (e.getSource().equals(settings)) {
+    	    	new SettingsFrame(game);
+    	    	this.dispose();
+    	    }
+>>>>>>> origin/master
     	}
   
 }

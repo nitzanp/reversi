@@ -42,8 +42,13 @@ public class Game extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         //setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+<<<<<<< HEAD
 
         int size = 4;
+=======
+        
+        int size = Settings.instance().getBoardSize();
+>>>>>>> origin/master
         getContentPane().setLayout(new BorderLayout());
         this.pass = 0;
         board = new Board(size, this);
@@ -103,7 +108,11 @@ public class Game extends JFrame implements ActionListener {
     	
 	public void actionPerformed(ActionEvent e) {
 	    if (e.getSource().equals(newGame)){
+<<<<<<< HEAD
 	        Game game = new Game(8, new Human(Disk.WHITE), new Computer(Disk.BLACK));
+=======
+	        Game game = new Game(Settings.instance().getBoardSize(), new Human(Disk.WHITE), new Human(Disk.BLACK));
+>>>>>>> origin/master
 	        this.dispose();
 	    }
 	    if (e.getSource().equals(exitGame)){
@@ -231,7 +240,11 @@ public class Game extends JFrame implements ActionListener {
 			displayB.setVisible(true);
 			b.addActionListener(new java.awt.event.ActionListener() {
 			        public void actionPerformed(java.awt.event.ActionEvent evt) {
+<<<<<<< HEAD
 			        	Game game = new Game(8, new Human(Disk.WHITE), new Computer(Disk.BLACK));
+=======
+			        	Game game = new Game(Settings.instance().getBoardSize(), new Human(Disk.WHITE), new Human(Disk.BLACK));
+>>>>>>> origin/master
 		    	        dispose();
 			        }
 			 });
