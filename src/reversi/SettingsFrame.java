@@ -25,7 +25,8 @@ public class SettingsFrame extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	
 	private Game currGame;
-	private JSpinner sizeSpinner;
+	private JSpinner heightSpinner;
+	private JSpinner widthSpinner;
 	private JTextField player1Name;
 	private JTextField player2Name;
 	private JButton save;
@@ -42,9 +43,13 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		
-		SpinnerNumberModel model = new SpinnerNumberModel(Settings.instance().getBoardSize(), 4, 16, 2);
-		setSizeSpinner(new JSpinner(model));
-		JPanel sizePane = makeSpinnerPanel("Board size:", sizeSpinner);
+		SpinnerNumberModel heightModel = new SpinnerNumberModel(Settings.instance().getBoardHeight(), 4, 16, 1);
+		heightSpinner = new JSpinner(heightModel);
+		JPanel heightPane = makeSpinnerPanel("Board size:", heightSpinner);
+		
+		SpinnerNumberModel widthModel = new SpinnerNumberModel(Settings.instance().getBoardWidth(), 4, 16, 1);
+		widthSpinner = new JSpinner(widthModel);
+		JPanel widthPane = makeSpinnerPanel("*", widthSpinner);
 		
 		player1Name = new JTextField();
 		player1Name.setColumns(10);
@@ -73,7 +78,8 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		discard = new JButton("DISCARD");
 		discard.addActionListener(this);
 		
-		getContentPane().add(sizePane);
+		getContentPane().add(heightPane);
+		getContentPane().add(widthPane);
 		getContentPane().add(player1Name);
 		getContentPane().add(player2Name);
 		getContentPane().add(player1Human);
@@ -94,10 +100,6 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		
 	}
 	
-	public void setSizeSpinner(JSpinner sizeSpinner) {
-		this.sizeSpinner = sizeSpinner;
-	}
-	
 	private JPanel makeSpinnerPanel(String label, JSpinner spin) {
 		JPanel tPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		tPane.setMaximumSize(new Dimension(250, 50));
@@ -110,7 +112,7 @@ public class SettingsFrame extends JFrame implements ActionListener {
 	}
 	
 	public JSpinner getSizeSpinner() {
-		return sizeSpinner;
+		return heightSpinner;
 	}
 
 	@Override
@@ -123,7 +125,8 @@ public class SettingsFrame extends JFrame implements ActionListener {
 			String player2 = player2Name.getText();
 			Settings.instance().setPlayer2Name(player2);
 			
-			Settings.instance().setBoardSize((Integer)sizeSpinner.getValue());
+			Settings.instance().setBoardHeight((Integer)heightSpinner.getValue());
+			Settings.instance().setBoardWidth((Integer)widthSpinner.getValue());
 			
 			boolean type = player1Group.getSelection().equals(player1Human);
 			System.out.println(type);

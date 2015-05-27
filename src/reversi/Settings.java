@@ -4,13 +4,15 @@ public class Settings {
 	
 	private static Settings instance = null;
 	
-	private int size;
+	private int height;
+	private int width;
 	private String player1Name;
 	private String player2Name;
 	
 	
 	private Settings() {
-		size = 8;
+		height = 8;
+		width = 8;
 		player1Name = "PLAYER1";
 		player2Name = "PLAYER2";
 	}
@@ -23,12 +25,20 @@ public class Settings {
 		return instance;
 	}
 	
-	public int getBoardSize() {
-		return size;
+	public int getBoardHeight() {
+		return height;
 	}
 	
-	public void setBoardSize(int size) {
-		this.size = size;
+	public void setBoardHeight(int height) {
+		this.height = height;
+	}
+	
+	public int getBoardWidth() {
+		return width;
+	}
+	
+	public void setBoardWidth(int width) {
+		this.width = width;
 	}
 	
 	public String getPlayer1Name() {

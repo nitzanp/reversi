@@ -36,17 +36,18 @@ public class Game extends JFrame implements ActionListener {
     private int pass;		//TODO - temp
     
 
-    public Game(int N, Player player1, Player player2){
+    public Game(Player player1, Player player2){
     	
     	super("Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         //setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         
-        int size = Settings.instance().getBoardSize();
+        int height = Settings.instance().getBoardHeight();
+        int width = Settings.instance().getBoardWidth();
         getContentPane().setLayout(new BorderLayout());
         this.pass = 0;
-        board = new Board(size, this);
+        board = new Board(height, width, this);
         this.player1 = player1;
         this.player2 = player2;
         currPlayer = player1;
@@ -103,7 +104,7 @@ public class Game extends JFrame implements ActionListener {
     	
 	public void actionPerformed(ActionEvent e) {
 	    if (e.getSource().equals(newGame)){
-	        Game game = new Game(Settings.instance().getBoardSize(), new Human(Disk.WHITE), new Human(Disk.BLACK));
+	        Game game = new Game(new Human(Disk.WHITE), new Human(Disk.BLACK));
 	        this.dispose();
 	    }
 	    if (e.getSource().equals(exitGame)){
@@ -197,7 +198,7 @@ public class Game extends JFrame implements ActionListener {
 			displayB.setVisible(true);
 			b.addActionListener(new java.awt.event.ActionListener() {
 			        public void actionPerformed(java.awt.event.ActionEvent evt) {
-			        	Game game = new Game(Settings.instance().getBoardSize(), new Human(Disk.WHITE), new Human(Disk.BLACK));
+			        	Game game = new Game(new Human(Disk.WHITE), new Human(Disk.BLACK));
 		    	        dispose();
 			        }
 			 });

@@ -10,41 +10,34 @@ import javax.swing.JPanel;
 
 public class Board extends JPanel {
 	private Game game;
-	private final int N;
+	private int width;
+	private int height;
 	private Map<Integer, Map<Integer, Cell>> allCells;
 	
-	public Board (int size, Game game) {
+	public Board (int height, int width, Game game) {
 	
-	    setLayout(new GridLayout(size,size));
+	    setLayout(new GridLayout(height, width));
 	    this.game = game;
+	    this.width = width;
+	    this.height = height;
 	    Color color;
 	    Cell cell;
 	    Cord cord;
 	    Disk disk;
 	    Map<Integer, Cell> row;
 	    allCells = new HashMap<Integer, Map<Integer, Cell>>();
-		N = size;
+		
 				
-		for (int i = 0; i < N; i++) {
+		for (int i = 0; i < height; i++) {
 			row = new HashMap<Integer, Cell>();
-    		if(i % 2 == 0)
-    			color = Color.cyan;
-    		else
-    			color = Color.DARK_GRAY;
     		
-    		for (int j = 0; j < N; j++) {
+    		for (int j = 0; j < width; j++) {
     			cord = new Cord(i, j);
     			
-    			cell = new Cell(cord, color, Disk.NONE, this, game);
-    			
-    			if (color.equals(Color.DARK_GRAY))
-    				color = Color.cyan;
-    			else
-    				color = Color.DARK_GRAY;
+    			cell = new Cell(cord, Color.gray, Disk.NONE, this, game);
     			
     			row.put(j, cell);
     			add(cell.getButton());
-    		
     		}
     		allCells.put(i,row);
     	}
@@ -56,11 +49,12 @@ public class Board extends JPanel {
 	}
 	
 	private void calcInit() {
-		int middle = N / 2;
-		allCells.get(middle-1).get(middle-1).setDisk(Disk.WHITE);
-		allCells.get(middle).get(middle).setDisk(Disk.WHITE);
-		allCells.get(middle).get(middle-1).setDisk(Disk.BLACK);
-		allCells.get(middle-1).get(middle).setDisk(Disk.BLACK);
+		int heightMiddle = (int) Math.ceil(height / 2);		
+		int widthMiddle = (int) Math.ceil(width / 2);
+		allCells.get(heightMiddle-1).get(widthMiddle-1).setDisk(Disk.WHITE);
+		allCells.get(heightMiddle).get(widthMiddle).setDisk(Disk.WHITE);
+		allCells.get(heightMiddle).get(widthMiddle-1).setDisk(Disk.BLACK);
+		allCells.get(heightMiddle-1).get(widthMiddle).setDisk(Disk.BLACK);
 	}
 	
 	public void calcWillChange() {
@@ -126,7 +120,7 @@ public class Board extends JPanel {
 	}
 	
 	public boolean isInBounds(Cord cord) {
-		return cord.getI() > -1 && cord.getI() < N && cord.getJ() > -1 && cord.getI() < N;
+		return cord.getI() > -1 && cord.getI() < height && cord.getJ() > -1 && cord.getI() < width;
 	}
 	
 	public Cell getCellByCord(Cord cord) {
