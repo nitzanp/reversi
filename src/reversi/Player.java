@@ -8,13 +8,8 @@ public interface Player {
 
 	public int getScore();
 	
-<<<<<<< HEAD
 	public void setScore(int score);
 	
 	public boolean getComputer();
-		
-=======
-	public void setScore(int score);		
->>>>>>> origin/master
 
 }

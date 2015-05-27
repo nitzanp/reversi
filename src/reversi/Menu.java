@@ -15,6 +15,7 @@ public class Menu extends JFrame implements ActionListener {
  
     private JButton newGame;
     private JButton resumeGame;
+    private JButton settings;
     private JButton exitGame;
     private Game game;
 
@@ -29,6 +30,7 @@ public class Menu extends JFrame implements ActionListener {
         // Create buttons
         newGame = new JButton("NEW GAME");
         resumeGame = new JButton("RESUME GAME");
+        settings = new JButton("SETTINGS");
         exitGame = new JButton("EXIT");
         
         if (game == null) {
@@ -37,14 +39,18 @@ public class Menu extends JFrame implements ActionListener {
         
         // Add action listeners
         newGame.addActionListener(this);
-        exitGame.addActionListener(this);
         resumeGame.addActionListener(this);
+        settings.addActionListener(this);
+        exitGame.addActionListener(this);
+
         
         // Add all objects to Content Pane
         getContentPane().setLayout(new FlowLayout());
         getContentPane().add(newGame);
-        getContentPane().add(exitGame);
         getContentPane().add(resumeGame);
+        getContentPane().add(settings);
+        getContentPane().add(exitGame);
+
       
         //Place at center
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -59,14 +65,9 @@ public class Menu extends JFrame implements ActionListener {
     }
     	
     	public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
-    	    if (e.getSource().equals(newGame)){
-    	    	Game game = new Game(8, new Human(Disk.WHITE), new Computer(Disk.BLACK));
-=======
  
     	    if (e.getSource().equals(newGame)){
     	    	this.game = new Game(Settings.instance().getBoardSize(), new Human(Disk.WHITE), new Human(Disk.BLACK));
->>>>>>> origin/master
     	    	this.dispose();
     	    }
     	    
@@ -79,13 +80,11 @@ public class Menu extends JFrame implements ActionListener {
     	    		this.dispose();
     	    	}
     	    }
-<<<<<<< HEAD
-=======
+
     	    if (e.getSource().equals(settings)) {
     	    	new SettingsFrame(game);
     	    	this.dispose();
     	    }
->>>>>>> origin/master
     	}
   
 }
