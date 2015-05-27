@@ -3,17 +3,12 @@ package reversi;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 
 public class Cell implements MouseListener {
 	
@@ -53,8 +48,7 @@ public class Cell implements MouseListener {
 		button = new JButton();
 
 		button.setBackground(color);
-		//button.addActionListener(this);
-		button.setText(cord.toString());
+		//button.setText(cord.toString());
 		button.addMouseListener(this);
 		setIconByDisk(disk);
 	}

@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -23,13 +24,18 @@ public class Menu extends JFrame implements ActionListener {
         super("MainMenu");
         this.game = game;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new BorderLayout());
+        //getContentPane().setLayout(new BorderLayout());
+        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
   
         // Create buttons
         newGame = new JButton("NEW GAME");
         resumeGame = new JButton("RESUME GAME");
         settings = new JButton("SETTINGS");
         exitGame = new JButton("EXIT");
+        
+        if (game == null) {
+        	resumeGame.setEnabled(false);
+        }
         
         // Add action listeners
         newGame.addActionListener(this);
@@ -58,31 +64,9 @@ public class Menu extends JFrame implements ActionListener {
     }
     	
     	public void actionPerformed(ActionEvent e) {
-//    		switch (e.getSource()) {
-//			case newGame:
-//    	    	Game game = new Game(8, new Human(Disk.WHITE, "fds"), new Human(Disk.BLACK, "fs"));
-//    	    	this.dispose();
-//				break;
-//			
-//			case exitGame:
-//				System.exit(0);
-//				
-//			case resumeGame:
-//    	    	if(game != null) {
-//		    		game.setVisible(true);
-//		    		this.dispose();
-//    	    	}
-//	    		break;
-//	    	
-//	    	case settings:
-//	    		new SettingsFrame();
-//
-//			default:
-//				break;
-//			}
  
     	    if (e.getSource().equals(newGame)){
-    	    	Game game = new Game(8, new Human(Disk.WHITE, "fds"), new Human(Disk.BLACK, "fs"));
+    	    	this.game = new Game(Settings.instance().getBoardSize(), new Human(Disk.WHITE), new Human(Disk.BLACK));
     	    	this.dispose();
     	    }
     	    
@@ -96,7 +80,8 @@ public class Menu extends JFrame implements ActionListener {
     	    	}
     	    }
     	    if (e.getSource().equals(settings)) {
-    	    	new SettingsFrame();
+    	    	new SettingsFrame(game);
+    	    	this.dispose();
     	    }
     	}
   

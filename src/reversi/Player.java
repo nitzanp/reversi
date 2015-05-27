@@ -8,9 +8,6 @@ public interface Player {
 
 	public int getScore();
 	
-	public void setScore(int score);
-	
-	public String getName();
-		
+	public void setScore(int score);		
 
 }

@@ -42,7 +42,7 @@ public class Game extends JFrame implements ActionListener {
         
         //setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         
-        int size = Settings.instance().getN();
+        int size = Settings.instance().getBoardSize();
         getContentPane().setLayout(new BorderLayout());
         this.pass = 0;
         board = new Board(size, this);
@@ -102,7 +102,7 @@ public class Game extends JFrame implements ActionListener {
     	
 	public void actionPerformed(ActionEvent e) {
 	    if (e.getSource().equals(newGame)){
-	        Game game = new Game(8, new Human(Disk.WHITE, "uri"), new Human(Disk.BLACK, "nitzan"));
+	        Game game = new Game(Settings.instance().getBoardSize(), new Human(Disk.WHITE), new Human(Disk.BLACK));
 	        this.dispose();
 	    }
 	    if (e.getSource().equals(exitGame)){
@@ -184,7 +184,7 @@ public class Game extends JFrame implements ActionListener {
 			displayB.add(b);
 			b.addActionListener(new java.awt.event.ActionListener() {
 			        public void actionPerformed(java.awt.event.ActionEvent evt) {
-			        	Game game = new Game(8, new Human(Disk.WHITE, "h"), new Human(Disk.BLACK, "j"));
+			        	Game game = new Game(Settings.instance().getBoardSize(), new Human(Disk.WHITE), new Human(Disk.BLACK));
 		    	        dispose();
 			        }
 			 });
