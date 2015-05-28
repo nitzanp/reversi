@@ -2,8 +2,6 @@ package reversi;
 
 
 import java.awt.BorderLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -19,7 +17,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 
 public class Game extends JFrame implements ActionListener {
 	
@@ -45,7 +42,7 @@ public class Game extends JFrame implements ActionListener {
     	super("Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+        //setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         
         int height = Settings.instance().getBoardHeight();
         int width = Settings.instance().getBoardWidth();
@@ -94,22 +91,21 @@ public class Game extends JFrame implements ActionListener {
         
         
         //Place at center
-        //Methods.placeAtCenter(this, this.getSize().width, this.getSize().height);
-
-        
-        if(player1.getComputer())
-        	((Computer)player1).play(board);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        int jframeWidth = this.getSize().width;
+        int jframeHeight = this.getSize().height;
+        int X = (dim.width - jframeWidth)/2 - 450;
+        int Y = (dim.height - jframeHeight)/4 - 120;
+        this.setLocation(X, Y);
+ 
         pack();
         setVisible(true);
     }
     	
     	
 	public void actionPerformed(ActionEvent e) {
-		Player player1 = (Settings.instance().get1IsComputer()) ? new Computer(Disk.WHITE) : new Human(Disk.WHITE);
-		Player player2 = (Settings.instance().get2IsComputer()) ? new Computer(Disk.BLACK) : new Human(Disk.BLACK);
-		
 	    if (e.getSource().equals(newGame)){
-	        Game game = new Game(player1, player2);
+	        Game game = new Game(new Human(Disk.WHITE), new Human(Disk.BLACK));
 	        this.dispose();
 	    }
 	    if (e.getSource().equals(exitGame)){
@@ -152,7 +148,7 @@ public class Game extends JFrame implements ActionListener {
 				}
 				
 			}
-			if (currPlayer.isEqual(player1) && pass < 2){
+			if (currPlayer.isEqual(player1)){
 				player1Button.setBackground(Color.RED);
 				player2Button.setBackground(SystemColor.text);	
 				
@@ -162,16 +158,16 @@ public class Game extends JFrame implements ActionListener {
 				
 			}
 			else {
-				if ( pass < 2){
-					player2Button.setBackground(Color.RED);
-					player1Button.setBackground(SystemColor.text);
-					
-					if(currPlayer.getComputer()){
-						((Computer) currPlayer).play(board);
-					}
+				player2Button.setBackground(Color.RED);
+				player1Button.setBackground(SystemColor.text);
+				
+				if(currPlayer.getComputer()){
+					((Computer) currPlayer).play(board);
 				}
 				
 			}
+			pass = 0;
+
 			
 		}
 		
@@ -183,46 +179,33 @@ public class Game extends JFrame implements ActionListener {
 		public void endGame(){
 		    String name;
 			if (player1.getScore() > player2.getScore()) {
-				System.out.println("Player1 WINS!\n   click for restart");
-				name = "Player1 WINS!\n   click for restart";
+				System.out.println("player1 wins");
+				name = "Player1 WINS! - click for restart";
 			}
 			else{
 				if (player2.getScore() > player1.getScore()){ 
-					System.out.println("Player2 WINS!\n   click for restart");
-					
-					name ="Player2 WINS!\n   click for restart";
+					System.out.println("player2 wins");
+					name ="Player2 WINS! - click for restart";
 				}
 				else{
 					System.out.println("it's a tie!");
-					name = "it's a TIE!\n    click for restart";
+					name = "it's a TIE! - click for restart";
 				}
 			}
-			JPanel displayMessage = new JPanel();
-			JButton b = new JButton(name);
-			b.setToolTipText(name);
-			JDialog message = new JDialog();
-			message.addWindowListener(new WindowAdapter() {
-			      public void windowClosing(WindowEvent e) {
-			      }
-			});
-			message.setTitle("game - ended");
-			message.getRootPane().setDefaultButton(b);
-			b.setPreferredSize(new Dimension(150,150) );
-			displayMessage.add(b);
-		
-			message.getContentPane().add(displayMessage);
+			JPanel displayB = new JPanel();
 			
-			message.setSize(200, 200);
-		
-			message.setLocationRelativeTo(null);
-			message.show();
+			JButton b = new JButton(name);
+			displayB.add(b);
+			displayB.setVisible(true);
 			b.addActionListener(new java.awt.event.ActionListener() {
 			        public void actionPerformed(java.awt.event.ActionEvent evt) {
-			        	dispose();
-			    	    Game game = new Game(player1, player2);
-			    	    
+			        	Game game = new Game(new Human(Disk.WHITE), new Human(Disk.BLACK));
+		    	        dispose();
 			        }
 			 });
+			//jLayeredPane2.invalidate();
+			board.setVisible(false);
+			getContentPane().add(displayB, BorderLayout.CENTER);
 			
 		}
 		public void setScore(int flipped) {
@@ -247,4 +230,10 @@ public class Game extends JFrame implements ActionListener {
 			return sb.toString();			
 		}
 		
+		public void addButton(String name) {
+			//TODO - ??
+  
+		}
+	
+   
 }
