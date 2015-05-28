@@ -3,6 +3,8 @@ package reversi;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,8 +26,7 @@ public class Menu extends JFrame implements ActionListener {
         super("MainMenu");
         this.game = game;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //getContentPane().setLayout(new BorderLayout());
-        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
+        getContentPane().setLayout(new GridLayout(4, 1));
   
         // Create buttons
         newGame = new JButton("NEW GAME");
@@ -42,10 +43,9 @@ public class Menu extends JFrame implements ActionListener {
         resumeGame.addActionListener(this);
         settings.addActionListener(this);
         exitGame.addActionListener(this);
-
+        
         
         // Add all objects to Content Pane
-        getContentPane().setLayout(new FlowLayout());
         getContentPane().add(newGame);
         getContentPane().add(resumeGame);
         getContentPane().add(settings);

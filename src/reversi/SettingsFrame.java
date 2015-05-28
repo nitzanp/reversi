@@ -1,8 +1,10 @@
 package reversi;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +36,9 @@ public class SettingsFrame extends JFrame implements ActionListener {
 	private JRadioButton player1Human;
 	private JRadioButton player1Computer;
 	private ButtonGroup player1Group;
+	private JRadioButton player2Human;
+	private JRadioButton player2Computer;
+	private ButtonGroup player2Group;
 	
 	public SettingsFrame(Game game) {
 		super("Settings");
@@ -41,15 +46,14 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		this.currGame = game;
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+		getContentPane().setLayout(new GridLayout(5, 1));
 		
 		SpinnerNumberModel heightModel = new SpinnerNumberModel(Settings.instance().getBoardHeight(), 4, 16, 1);
 		heightSpinner = new JSpinner(heightModel);
-		JPanel heightPane = makeSpinnerPanel("Board size:", heightSpinner);
 		
 		SpinnerNumberModel widthModel = new SpinnerNumberModel(Settings.instance().getBoardWidth(), 4, 16, 1);
 		widthSpinner = new JSpinner(widthModel);
-		JPanel widthPane = makeSpinnerPanel("*", widthSpinner);
+		JPanel sizePane = makeSizePanel(heightSpinner, widthSpinner);
 		
 		player1Name = new JTextField();
 		player1Name.setColumns(10);
@@ -60,9 +64,8 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		player2Name.setText("Player2");
 		
 		player1Human = new JRadioButton("Human");
-		//player1Human.setMnemonic(KeyEvent.VK_B);
 		player1Human.setActionCommand("player1Human");
-		player1Human.setSelected(true);
+		player1Human.setSelected(true);			//TODO - change default by current?
 		
 		player1Computer = new JRadioButton("Computer");
 		player1Computer.setActionCommand("player1Computer");
@@ -72,18 +75,31 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		player1Group.add(player1Human);
 		player1Group.add(player1Computer);
 		
+		JPanel player1Panel = makePlayerPanel(player1Name, player1Human, player1Computer);
+		
+		player2Human = new JRadioButton("Human");
+		player2Human.setActionCommand("player2Human");
+		player2Human.setSelected(true);			//TODO - change default by current?
+		
+		player2Computer = new JRadioButton("Computer");
+		player2Computer.setActionCommand("player2Computer");
+		player2Computer.setSelected(false);
+		
+		player2Group = new ButtonGroup();
+		player2Group.add(player2Human);
+		player2Group.add(player2Computer);
+		
+		JPanel player2Panel = makePlayerPanel(player2Name, player2Human, player2Computer);
+		
 		save = new JButton("SAVE");
 		save.addActionListener(this);
 		
 		discard = new JButton("DISCARD");
 		discard.addActionListener(this);
 		
-		getContentPane().add(heightPane);
-		getContentPane().add(widthPane);
-		getContentPane().add(player1Name);
-		getContentPane().add(player2Name);
-		getContentPane().add(player1Human);
-		getContentPane().add(player1Computer);
+		getContentPane().add(sizePane);
+		getContentPane().add(player1Panel);
+		getContentPane().add(player2Panel);
 		getContentPane().add(save);
 		getContentPane().add(discard);
 		
@@ -100,14 +116,31 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		
 	}
 	
-	private JPanel makeSpinnerPanel(String label, JSpinner spin) {
+	private JPanel makeSizePanel(JSpinner height, JSpinner width) {
 		JPanel tPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		tPane.setMaximumSize(new Dimension(250, 50));
 		tPane.setMinimumSize(new Dimension(250, 50));
 		tPane.setAlignmentX(Component.LEFT_ALIGNMENT);
-		JLabel tLabel = new JLabel(label);
-		tPane.add(tLabel);
-		tPane.add(spin);
+		JLabel label1 = new JLabel("Board size:");
+		JLabel label2 = new JLabel("*");
+		tPane.add(label1);
+		tPane.add(height);
+		tPane.add(label2);
+		tPane.add(width);
+		
+		return tPane;
+	}
+	
+	private JPanel makePlayerPanel(JTextField name, JRadioButton human, JRadioButton computer) {
+		JPanel tPane = new JPanel(new BorderLayout());
+		tPane.setMaximumSize(new Dimension(250, 50));
+		tPane.setMinimumSize(new Dimension(250, 50));
+		
+		tPane.add(name, BorderLayout.NORTH);
+		tPane.add(human, BorderLayout.WEST);
+		tPane.add(computer, BorderLayout.EAST);
+
+		
 		return tPane;
 	}
 	
@@ -128,8 +161,12 @@ public class SettingsFrame extends JFrame implements ActionListener {
 			Settings.instance().setBoardHeight((Integer)heightSpinner.getValue());
 			Settings.instance().setBoardWidth((Integer)widthSpinner.getValue());
 			
-			boolean type = player1Group.getSelection().equals(player1Human);
-			System.out.println(type);
+			if (player1Human.isSelected()) {
+				System.out.println("player1 is human");
+			}
+			if (player1Computer.isSelected()) {
+				System.out.println("player1 is computer");
+			}
 	    	
 	    	new Menu(null);	
 			this.dispose();

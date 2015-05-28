@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -66,7 +67,7 @@ public class Game extends JFrame implements ActionListener {
         player1Button = new JButton(scoreString(player1));
         player1Button.setBackground(Color.RED);
         player2Button = new JButton(scoreString(player2));
-        //player2Button.setBackground();
+        player2Button.setBackground(Color.WHITE);
        
         
         // Add action listeners
@@ -216,8 +217,6 @@ public class Game extends JFrame implements ActionListener {
 				 player2.setScore(player2.getScore() + flipped + 1);
 				 player1.setScore(player1.getScore() - flipped);
 			 }
-//			 player1Button.setText("PLAYER 1: " + player1.getScore());
-//			 player2Button.setText("PLAYER 2: " + player2.getScore());
 			 player1Button.setText(scoreString(player1));
 			 player2Button.setText(scoreString(player2));
 		}
@@ -232,9 +231,8 @@ public class Game extends JFrame implements ActionListener {
 		}
 		
 		public void addButton(String name) {
-		   
-
-		   
+			//TODO - ??
+  
 		}
 	
    
