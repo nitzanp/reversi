@@ -1,6 +1,7 @@
 package reversi;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
@@ -28,6 +29,11 @@ public class Menu extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(new GridLayout(4, 1));
   
+        //set view
+        this.setSize(500, 300);
+        this.setLocationRelativeTo(null);
+        this.setBackground(Color.CYAN);
+        
         // Create buttons
         newGame = new JButton("NEW GAME");
         resumeGame = new JButton("RESUME GAME");
@@ -50,17 +56,8 @@ public class Menu extends JFrame implements ActionListener {
         getContentPane().add(resumeGame);
         getContentPane().add(settings);
         getContentPane().add(exitGame);
-
-      
-        //Place at center
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        int jframeWidth = this.getSize().width;
-        int jframeHeight = this.getSize().height;
-        int X = (dim.width - jframeWidth)/2 - 100;
-        int Y = (dim.height - jframeHeight)/4;
-        this.setLocation(X, Y);
-      
-        pack();
+        
+       
         setVisible(true);
     }
     	

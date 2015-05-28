@@ -102,17 +102,12 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		getContentPane().add(player2Panel);
 		getContentPane().add(save);
 		getContentPane().add(discard);
-		
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        int jframeWidth = this.getSize().width;
-        int jframeHeight = this.getSize().height;
-        int X = (dim.width - jframeWidth)/2 - 100;
-        int Y = (dim.height - jframeHeight)/4;
-        this.setLocation(X, Y);
+		this.setSize(300, 300);
+		this.setLocationRelativeTo(null);
 		
 		setResizable(false);
 		setVisible(true);
-		pack();
+	
 		
 	}
 	

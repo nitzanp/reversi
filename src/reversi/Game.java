@@ -2,6 +2,8 @@ package reversi;
 
 
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -17,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 
 public class Game extends JFrame implements ActionListener {
 	
@@ -91,12 +94,8 @@ public class Game extends JFrame implements ActionListener {
         
         
         //Place at center
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        int jframeWidth = this.getSize().width;
-        int jframeHeight = this.getSize().height;
-        int X = (dim.width - jframeWidth)/2 - 450;
-        int Y = (dim.height - jframeHeight)/4 - 120;
-        this.setLocation(X, Y);
+        //Methods.placeAtCenter(this, this.getSize().width, this.getSize().height);
+
         
         if(player1.getComputer())
         	((Computer)player1).play(board);
@@ -184,24 +183,39 @@ public class Game extends JFrame implements ActionListener {
 		public void endGame(){
 		    String name;
 			if (player1.getScore() > player2.getScore()) {
-				System.out.println("player1 wins");
-				name = "Player1 WINS! - click for restart";
+				System.out.println("Player1 WINS!\n   click for restart");
+				name = "Player1 WINS!\n   click for restart";
 			}
 			else{
 				if (player2.getScore() > player1.getScore()){ 
-					System.out.println("player2 wins");
-					name ="Player2 WINS! - click for restart";
+					System.out.println("Player2 WINS!\n   click for restart");
+					
+					name ="Player2 WINS!\n   click for restart";
 				}
 				else{
 					System.out.println("it's a tie!");
-					name = "it's a TIE! - click for restart";
+					name = "it's a TIE!\n    click for restart";
 				}
 			}
-			JPanel displayB = new JPanel();
-			
+			JPanel displayMessage = new JPanel();
 			JButton b = new JButton(name);
-			displayB.add(b);
-			displayB.setVisible(true);
+			b.setToolTipText(name);
+			JDialog message = new JDialog();
+			message.addWindowListener(new WindowAdapter() {
+			      public void windowClosing(WindowEvent e) {
+			      }
+			});
+			message.setTitle("game - ended");
+			message.getRootPane().setDefaultButton(b);
+			b.setPreferredSize(new Dimension(150,150) );
+			displayMessage.add(b);
+		
+			message.getContentPane().add(displayMessage);
+			
+			message.setSize(200, 200);
+		
+			message.setLocationRelativeTo(null);
+			message.show();
 			b.addActionListener(new java.awt.event.ActionListener() {
 			        public void actionPerformed(java.awt.event.ActionEvent evt) {
 			        	dispose();
@@ -209,10 +223,6 @@ public class Game extends JFrame implements ActionListener {
 			    	    
 			        }
 			 });
-			//jLayeredPane2.invalidate();
-			board.setVisible(false);
-			
-			getContentPane().add(displayB, BorderLayout.CENTER);
 			
 		}
 		public void setScore(int flipped) {
