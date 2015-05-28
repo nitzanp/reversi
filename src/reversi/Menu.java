@@ -1,15 +1,11 @@
 package reversi;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -67,7 +63,7 @@ public class Menu extends JFrame implements ActionListener {
     	public void actionPerformed(ActionEvent e) {
  
     	    if (e.getSource().equals(newGame)){
-    	    	this.game = new Game(new Human(Disk.WHITE), new Human(Disk.BLACK));
+    	    	this.game = new Game(new Human(Disk.WHITE), new Human(Disk.BLACK));		//TODO
     	    	this.dispose();
     	    }
     	    

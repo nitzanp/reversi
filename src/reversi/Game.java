@@ -10,13 +10,14 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
-import javax.swing.AbstractButton;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class Game extends JFrame implements ActionListener {
 	
@@ -32,7 +33,6 @@ public class Game extends JFrame implements ActionListener {
     public static int col;
     private Player player1;
     private Player player2;
-    private JPanel boardPanel;
     
     private int pass;		//TODO - temp
     
@@ -105,14 +105,14 @@ public class Game extends JFrame implements ActionListener {
     	
 	public void actionPerformed(ActionEvent e) {
 	    if (e.getSource().equals(newGame)){
-	        Game game = new Game(new Human(Disk.WHITE), new Human(Disk.BLACK));
+	        new Game(new Human(Disk.WHITE), new Human(Disk.BLACK));		//TODO
 	        this.dispose();
 	    }
 	    if (e.getSource().equals(exitGame)){
 	        System.exit(0);
 	    }
 	    if (e.getSource().equals(backToMenu)){
-	    	Menu menu = new Menu(this);	
+	    	new Menu(this);	
 	        this.setVisible(false);
 	    }
 	}
@@ -130,6 +130,49 @@ public class Game extends JFrame implements ActionListener {
     		}
     		return moves;
     	}
+    	
+    	public void noValidMoves() {
+    		Player otherPlayer = (currPlayer.isEqual(player1)) ? player2 : player1;
+    		
+    		if (validMoves(otherPlayer) == 0) {
+				System.out.println("GAME ENDED!!");
+    			endGame();
+    		}
+    		
+    		else {
+    			noValidMovesDialog();
+    			switchPlayer();
+    		}
+    	}
+    	
+    	public void noValidMovesDialog() {
+    		JDialog.setDefaultLookAndFeelDecorated(true);
+	 		
+    		final JDialog dialog = new JDialog(this, "No valid moves", true);		//TODO - set to true?
+            dialog.setSize(200,100);
+            dialog.setLayout(new BorderLayout());
+            
+            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+            int jframeWidth = this.getSize().width;
+            int jframeHeight = this.getSize().height;
+            int X = (dim.width - jframeWidth)/2;
+            int Y = (dim.height - jframeHeight)/4;
+            dialog.setLocation(X, Y);
+            
+            String name = (currPlayer == player1) ? Settings.instance().getPlayer1Name() : Settings.instance().getPlayer2Name();
+            
+            dialog.add(new JLabel(name + " have no valid moves!"), BorderLayout.CENTER);
+            JButton ok = new JButton("OK");
+            ok.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					dialog.dispose();
+				}
+			});
+            dialog.add(ok, BorderLayout.PAGE_END);
+                        
+            dialog.setVisible(true);
+    	}
 
 
 		public void switchPlayer() {
@@ -137,17 +180,9 @@ public class Game extends JFrame implements ActionListener {
 			currPlayer = (currPlayer.isEqual(player1)) ? player2 : player1;
 				
 			if (validMoves(currPlayer) == 0) {
-				System.out.println("NO VALID MOVES!");		//TODO - popup a message
-				pass++;
-				if (pass == 2) {
-					System.out.println("GAME ENDED!!");
-					endGame();
-				}
-				else {
-					switchPlayer();
-				}
-				
+				noValidMoves();
 			}
+			
 			if (currPlayer.isEqual(player1)){
 				player1Button.setBackground(Color.RED);
 				player2Button.setBackground(SystemColor.text);	
@@ -155,7 +190,6 @@ public class Game extends JFrame implements ActionListener {
 				if(currPlayer.getComputer()){
 					((Computer) currPlayer).play(board);
 				}
-				
 			}
 			else {
 				player2Button.setBackground(Color.RED);
@@ -166,8 +200,6 @@ public class Game extends JFrame implements ActionListener {
 				}
 				
 			}
-			pass = 0;
-
 			
 		}
 		
@@ -177,35 +209,65 @@ public class Game extends JFrame implements ActionListener {
 
 
 		public void endGame(){
-		    String name;
-			if (player1.getScore() > player2.getScore()) {
-				System.out.println("player1 wins");
-				name = "Player1 WINS! - click for restart";
-			}
-			else{
-				if (player2.getScore() > player1.getScore()){ 
-					System.out.println("player2 wins");
-					name ="Player2 WINS! - click for restart";
-				}
-				else{
-					System.out.println("it's a tie!");
-					name = "it's a TIE! - click for restart";
-				}
-			}
-			JPanel displayB = new JPanel();
+		    //String name;
+		    String msg;
+		    
+		    if (player1.getScore() == player2.getScore()) {
+				System.out.println("it's a tie!");
+				//name = "it's a TIE! - click for restart";
+				msg = "it's a TIE! - click for restart";
+				//TODO - dialog
+				return;
+		    }
+		    
+		    Player winner = (player1.getScore() > player2.getScore()) ? player1 : player2;
+		    String winnerName = (winner.equals(player1)) ? Settings.instance().getPlayer1Name() : Settings.instance().getPlayer2Name();
+		    
+			System.out.println(winnerName + " wins");
+			//name = "Player1 WINS! - click for restart";
+			msg = winnerName + " WINS!";
 			
-			JButton b = new JButton(name);
-			displayB.add(b);
-			displayB.setVisible(true);
-			b.addActionListener(new java.awt.event.ActionListener() {
-			        public void actionPerformed(java.awt.event.ActionEvent evt) {
-			        	Game game = new Game(new Human(Disk.WHITE), new Human(Disk.BLACK));
-		    	        dispose();
-			        }
-			 });
+    		JDialog.setDefaultLookAndFeelDecorated(true);
+	 		
+    		final JDialog dialog = new JDialog(this, "No valid moves", true);		//TODO - set to true?
+            dialog.setSize(200,100);
+            dialog.setLayout(new BorderLayout());
+            
+            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+            int jframeWidth = this.getSize().width;
+            int jframeHeight = this.getSize().height;
+            int X = (dim.width - jframeWidth)/2;
+            int Y = (dim.height - jframeHeight)/4;
+            dialog.setLocation(X, Y);
+                        
+            dialog.add(new JLabel(winnerName + " WINS!"), BorderLayout.CENTER);
+            JButton ok = new JButton("OK");
+            
+            ok.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					dialog.setVisible(false);
+				}
+			});
+            
+            dialog.add(ok, BorderLayout.PAGE_END);
+            
+            dialog.setVisible(true);
+
+//			JPanel displayB = new JPanel();
+//			
+//			JButton b = new JButton(name);
+//			displayB.add(b);
+//			displayB.setVisible(true);
+//			b.addActionListener(new java.awt.event.ActionListener() {
+//			        public void actionPerformed(java.awt.event.ActionEvent evt) {
+//			        	new Game(new Human(Disk.WHITE), new Human(Disk.BLACK));		//TODO
+//		    	        dispose();
+//			        }
+//			 });
 			//jLayeredPane2.invalidate();
 			board.setVisible(false);
-			getContentPane().add(displayB, BorderLayout.CENTER);
+//			getContentPane().add(displayB, BorderLayout.CENTER);
 			
 		}
 		public void setScore(int flipped) {
