@@ -162,10 +162,20 @@ public class SettingsFrame extends JFrame implements ActionListener {
 			Settings.instance().setBoardWidth((Integer)widthSpinner.getValue());
 			
 			if (player1Human.isSelected()) {
+				Settings.instance().set1IsComputer(false);
 				System.out.println("player1 is human");
 			}
 			if (player1Computer.isSelected()) {
+				Settings.instance().set1IsComputer(true);
 				System.out.println("player1 is computer");
+			}
+			if (player2Human.isSelected()) {
+				Settings.instance().set2IsComputer(false);
+				System.out.println("player2 is human");
+			}
+			if (player2Computer.isSelected()) {
+				Settings.instance().set2IsComputer(true);
+				System.out.println("player2 is computer");
 			}
 	    	
 	    	new Menu(null);	

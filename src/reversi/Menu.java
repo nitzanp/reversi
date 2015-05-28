@@ -65,9 +65,11 @@ public class Menu extends JFrame implements ActionListener {
     }
     	
     	public void actionPerformed(ActionEvent e) {
- 
+    		Player player1 = (Settings.instance().get1IsComputer()) ? new Computer(Disk.WHITE) : new Human(Disk.WHITE);
+    		Player player2 = (Settings.instance().get2IsComputer()) ? new Computer(Disk.BLACK) : new Human(Disk.BLACK);
+    		
     	    if (e.getSource().equals(newGame)){
-    	    	this.game = new Game(new Human(Disk.WHITE), new Human(Disk.BLACK));
+    	    	this.game = new Game(player1, player2);
     	    	this.dispose();
     	    }
     	    

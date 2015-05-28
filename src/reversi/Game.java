@@ -42,7 +42,7 @@ public class Game extends JFrame implements ActionListener {
     	super("Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        //setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         
         int height = Settings.instance().getBoardHeight();
         int width = Settings.instance().getBoardWidth();
@@ -97,15 +97,20 @@ public class Game extends JFrame implements ActionListener {
         int X = (dim.width - jframeWidth)/2 - 450;
         int Y = (dim.height - jframeHeight)/4 - 120;
         this.setLocation(X, Y);
- 
+        
+        if(player1.getComputer())
+        	((Computer)player1).play(board);
         pack();
         setVisible(true);
     }
     	
     	
 	public void actionPerformed(ActionEvent e) {
+		Player player1 = (Settings.instance().get1IsComputer()) ? new Computer(Disk.WHITE) : new Human(Disk.WHITE);
+		Player player2 = (Settings.instance().get2IsComputer()) ? new Computer(Disk.BLACK) : new Human(Disk.BLACK);
+		
 	    if (e.getSource().equals(newGame)){
-	        Game game = new Game(new Human(Disk.WHITE), new Human(Disk.BLACK));
+	        Game game = new Game(player1, player2);
 	        this.dispose();
 	    }
 	    if (e.getSource().equals(exitGame)){
@@ -148,7 +153,7 @@ public class Game extends JFrame implements ActionListener {
 				}
 				
 			}
-			if (currPlayer.isEqual(player1)){
+			if (currPlayer.isEqual(player1) && pass < 2){
 				player1Button.setBackground(Color.RED);
 				player2Button.setBackground(SystemColor.text);	
 				
@@ -158,16 +163,16 @@ public class Game extends JFrame implements ActionListener {
 				
 			}
 			else {
-				player2Button.setBackground(Color.RED);
-				player1Button.setBackground(SystemColor.text);
-				
-				if(currPlayer.getComputer()){
-					((Computer) currPlayer).play(board);
+				if ( pass < 2){
+					player2Button.setBackground(Color.RED);
+					player1Button.setBackground(SystemColor.text);
+					
+					if(currPlayer.getComputer()){
+						((Computer) currPlayer).play(board);
+					}
 				}
 				
 			}
-			pass = 0;
-
 			
 		}
 		
@@ -199,12 +204,14 @@ public class Game extends JFrame implements ActionListener {
 			displayB.setVisible(true);
 			b.addActionListener(new java.awt.event.ActionListener() {
 			        public void actionPerformed(java.awt.event.ActionEvent evt) {
-			        	Game game = new Game(new Human(Disk.WHITE), new Human(Disk.BLACK));
-		    	        dispose();
+			        	dispose();
+			    	    Game game = new Game(player1, player2);
+			    	    
 			        }
 			 });
 			//jLayeredPane2.invalidate();
 			board.setVisible(false);
+			
 			getContentPane().add(displayB, BorderLayout.CENTER);
 			
 		}
@@ -230,10 +237,4 @@ public class Game extends JFrame implements ActionListener {
 			return sb.toString();			
 		}
 		
-		public void addButton(String name) {
-			//TODO - ??
-  
-		}
-	
-   
 }
