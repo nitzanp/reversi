@@ -8,6 +8,10 @@ public class Settings {
 	private int width;
 	private String player1Name;
 	private String player2Name;
+
+	private boolean is1Computer;
+
+	private Boolean is2Computer;
 	
 	
 	private Settings() {
@@ -15,6 +19,8 @@ public class Settings {
 		width = 8;
 		player1Name = "PLAYER1";
 		player2Name = "PLAYER2";
+		is1Computer = false;
+		is2Computer = false;
 	}
 	
 	public static Settings instance() {
@@ -56,5 +62,19 @@ public class Settings {
 	public void setPlayer2Name(String name) {
 		this.player2Name = name;
 	}
+	
+	public Boolean get1IsComputer(){
+		return is1Computer;
+	}
+	public void set1IsComputer(boolean bool){
+		is1Computer = bool;
+	}
+	public Boolean get2IsComputer(){
+		return is2Computer;
+	}
+	public void set2IsComputer(boolean bool){
+		is2Computer = bool;
+	}
+	
 
 }

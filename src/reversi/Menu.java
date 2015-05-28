@@ -1,6 +1,7 @@
 package reversi;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
@@ -28,6 +29,11 @@ public class Menu extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setLayout(new GridLayout(4, 1));
   
+        //set view
+        this.setSize(500, 300);
+        this.setLocationRelativeTo(null);
+        this.setBackground(Color.CYAN);
+        
         // Create buttons
         newGame = new JButton("NEW GAME");
         resumeGame = new JButton("RESUME GAME");
@@ -50,24 +56,17 @@ public class Menu extends JFrame implements ActionListener {
         getContentPane().add(resumeGame);
         getContentPane().add(settings);
         getContentPane().add(exitGame);
-
-      
-        //Place at center
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        int jframeWidth = this.getSize().width;
-        int jframeHeight = this.getSize().height;
-        int X = (dim.width - jframeWidth)/2 - 100;
-        int Y = (dim.height - jframeHeight)/4;
-        this.setLocation(X, Y);
-      
-        pack();
+        
+       
         setVisible(true);
     }
     	
     	public void actionPerformed(ActionEvent e) {
- 
+    		Player player1 = (Settings.instance().get1IsComputer()) ? new Computer(Disk.WHITE) : new Human(Disk.WHITE);
+    		Player player2 = (Settings.instance().get2IsComputer()) ? new Computer(Disk.BLACK) : new Human(Disk.BLACK);
+    		
     	    if (e.getSource().equals(newGame)){
-    	    	this.game = new Game(new Human(Disk.WHITE), new Human(Disk.BLACK));
+    	    	this.game = new Game(player1, player2);
     	    	this.dispose();
     	    }
     	    
