@@ -91,7 +91,6 @@ public class Cell implements MouseListener {
 	
 	public void setIconByDisk(Disk disk) {
 		String path = this.getClass().getClassLoader().getResource("").getPath(); //need to check if works in every computer
-		System.out.println(path);
 		String BLACK_PIC = path + "black.png";
 	    String WHITE_PIC = path + "white.png";
 		if (disk != Disk.NONE) {

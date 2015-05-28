@@ -99,17 +99,12 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		getContentPane().add(player2Panel);
 		getContentPane().add(save);
 		getContentPane().add(discard);
-		
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        int jframeWidth = this.getSize().width;
-        int jframeHeight = this.getSize().height;
-        int X = (dim.width - jframeWidth)/2 - 100;
-        int Y = (dim.height - jframeHeight)/4;
-        this.setLocation(X, Y);
+		this.setSize(300, 300);
+		this.setLocationRelativeTo(null);
 		
 		setResizable(false);
 		setVisible(true);
-		pack();
+	
 		
 	}
 	
@@ -159,10 +154,20 @@ public class SettingsFrame extends JFrame implements ActionListener {
 			Settings.instance().setBoardWidth((Integer)widthSpinner.getValue());
 			
 			if (player1Human.isSelected()) {
+				Settings.instance().set1IsComputer(false);
 				System.out.println("player1 is human");
 			}
 			if (player1Computer.isSelected()) {
+				Settings.instance().set1IsComputer(true);
 				System.out.println("player1 is computer");
+			}
+			if (player2Human.isSelected()) {
+				Settings.instance().set2IsComputer(false);
+				System.out.println("player2 is human");
+			}
+			if (player2Computer.isSelected()) {
+				Settings.instance().set2IsComputer(true);
+				System.out.println("player2 is computer");
 			}
 	    	
 	    	new Menu(null);	

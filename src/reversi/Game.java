@@ -2,6 +2,8 @@ package reversi;
 
 
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -19,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+
 public class Game extends JFrame implements ActionListener {
 	
 	private  Player currPlayer;
@@ -33,21 +36,18 @@ public class Game extends JFrame implements ActionListener {
     public static int col;
     private Player player1;
     private Player player2;
-    
-    private int pass;		//TODO - temp
-    
+        
 
     public Game(Player player1, Player player2){
     	
     	super("Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        //setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         
         int height = Settings.instance().getBoardHeight();
         int width = Settings.instance().getBoardWidth();
         getContentPane().setLayout(new BorderLayout());
-        this.pass = 0;
         board = new Board(height, width, this);
         this.player1 = player1;
         this.player2 = player2;
@@ -91,21 +91,23 @@ public class Game extends JFrame implements ActionListener {
         
         
         //Place at center
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        int jframeWidth = this.getSize().width;
-        int jframeHeight = this.getSize().height;
-        int X = (dim.width - jframeWidth)/2 - 450;
-        int Y = (dim.height - jframeHeight)/4 - 120;
-        this.setLocation(X, Y);
- 
+        //Methods.placeAtCenter(this, this.getSize().width, this.getSize().height);
+
+        
+        if(player1.getComputer())
+        	((Computer)player1).play(board);
         pack();
         setVisible(true);
     }
     	
     	
 	public void actionPerformed(ActionEvent e) {
+		Player player1 = (Settings.instance().get1IsComputer()) ? new Computer(Disk.WHITE) : new Human(Disk.WHITE);
+		Player player2 = (Settings.instance().get2IsComputer()) ? new Computer(Disk.BLACK) : new Human(Disk.BLACK);
+		
 	    if (e.getSource().equals(newGame)){
-	        new Game(new Human(Disk.WHITE), new Human(Disk.BLACK));		//TODO
+	        Game game = new Game(player1, player2);
+
 	        this.dispose();
 	    }
 	    if (e.getSource().equals(exitGame)){
@@ -207,7 +209,7 @@ public class Game extends JFrame implements ActionListener {
 			return currPlayer;
 		}
 
-
+		//TODO!!!
 		public void endGame(){
 		    //String name;
 		    String msg;
@@ -268,6 +270,49 @@ public class Game extends JFrame implements ActionListener {
 			//jLayeredPane2.invalidate();
 			board.setVisible(false);
 //			getContentPane().add(displayB, BorderLayout.CENTER);
+//		    String name;
+//			if (player1.getScore() > player2.getScore()) {
+//				System.out.println("Player1 WINS!\n   click for restart");
+//				name = "Player1 WINS!\n   click for restart";
+//			}
+//			else{
+//				if (player2.getScore() > player1.getScore()){ 
+//					System.out.println("Player2 WINS!\n   click for restart");
+//					
+//					name ="Player2 WINS!\n   click for restart";
+//				}
+//				else{
+//					System.out.println("it's a tie!");
+//					name = "it's a TIE!\n    click for restart";
+//				}
+//			}
+//			JPanel displayMessage = new JPanel();
+//			JButton b = new JButton(name);
+//			b.setToolTipText(name);
+//			JDialog message = new JDialog();
+//			message.addWindowListener(new WindowAdapter() {
+//			      public void windowClosing(WindowEvent e) {
+//			      }
+//			});
+//			message.setTitle("game - ended");
+//			message.getRootPane().setDefaultButton(b);
+//			b.setPreferredSize(new Dimension(150,150) );
+//			displayMessage.add(b);
+//		
+//			message.getContentPane().add(displayMessage);
+//			
+//			message.setSize(200, 200);
+//		
+//			message.setLocationRelativeTo(null);
+//			message.show();
+//			b.addActionListener(new java.awt.event.ActionListener() {
+//			        public void actionPerformed(java.awt.event.ActionEvent evt) {
+//			        	dispose();
+//			    	    Game game = new Game(player1, player2);
+//			    	    
+//			        }
+//			 });
+//>>>>>>> b22c20580307d885563f49f1a923f77ffb09f111
 			
 		}
 		public void setScore(int flipped) {
@@ -292,10 +337,4 @@ public class Game extends JFrame implements ActionListener {
 			return sb.toString();			
 		}
 		
-		public void addButton(String name) {
-			//TODO - ??
-  
-		}
-	
-   
 }
