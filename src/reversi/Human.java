@@ -1,14 +1,14 @@
 package reversi;
 
-public class Human implements Player {
+public class Human extends Player {
 	
 	private Disk disk;
 	private int score;
 	
-	public Human(Disk disk){
-		this.disk=disk;
+	public Human(Disk disk, int num) {
+		super(num);
+		this.disk = disk;
 		score = 2;
-
 	}
 
 	public Disk getDisk() {
@@ -27,8 +27,7 @@ public class Human implements Player {
 		return this.disk == player.getDisk();
 	}
 
-	@Override
-	public boolean getComputer() {
+	public boolean isComputer() {
 		return false;
 	}
 	

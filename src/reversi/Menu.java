@@ -1,10 +1,7 @@
 package reversi;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -59,8 +56,8 @@ public class Menu extends JFrame implements ActionListener {
     }
     	
     	public void actionPerformed(ActionEvent e) {
-    		Player player1 = (Settings.instance().get1IsComputer()) ? new Computer(Disk.WHITE) : new Human(Disk.WHITE);
-    		Player player2 = (Settings.instance().get2IsComputer()) ? new Computer(Disk.BLACK) : new Human(Disk.BLACK);
+    		Player player1 = (Settings.instance().get1IsComputer()) ? new Computer(Disk.WHITE, 1) : new Human(Disk.WHITE, 1);
+    		Player player2 = (Settings.instance().get2IsComputer()) ? new Computer(Disk.BLACK, 2) : new Human(Disk.BLACK, 2);
     		
     	    if (e.getSource().equals(newGame)){
     	    	this.game = new Game(player1, player2);

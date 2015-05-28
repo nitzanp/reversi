@@ -1,14 +1,14 @@
 package reversi;
 
 import java.util.Map;
-import java.util.Vector;
 
-public class Computer implements Player  {
+public class Computer extends Player  {
 
 	private Disk disk;
 	private int score;
 	
-	public Computer(Disk disk){
+	public Computer(Disk disk, int num) {
+		super(num);
 		this.disk=disk;
 		score = 2;
 	}
@@ -62,10 +62,8 @@ public class Computer implements Player  {
 			
 	}
 
-	@Override
-	public boolean getComputer() {
-		
-		return true;
+	public boolean isComputer() {
+		return false;
 	}
 }
 

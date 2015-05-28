@@ -1,15 +1,38 @@
 package reversi;
 
-public interface Player {
+public abstract class Player {
 	
-	public Disk getDisk();
+	private int num;
+	
+	public Player(int num) {
+		this.num = num;
+	}
+	
+	public abstract Disk getDisk();
 
-	public boolean isEqual(Player player);
+	public abstract boolean isEqual(Player player);
 
-	public int getScore();
+	public abstract int getScore();
 	
-	public void setScore(int score);
+	public abstract void setScore(int score);
 	
-	public boolean getComputer();
+	public abstract boolean isComputer();
+	
+	public String getName() {
+		String name;
+		switch (num) {
+		case 1:
+			name = Settings.instance().getPlayer1Name();
+			break;
+		case 2:
+			name = Settings.instance().getPlayer2Name();
+			break;
+
+		default:
+			name = "Player";
+			break;
+		}
+		return name;
+	}
 
 }
