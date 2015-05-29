@@ -3,15 +3,13 @@ package reversi;
 public class Settings {
 	
 	private static Settings instance = null;
-	
+		
 	private int height;
 	private int width;
 	private String player1Name;
 	private String player2Name;
-
 	private boolean is1Computer;
-
-	private Boolean is2Computer;
+	private boolean is2Computer;
 	
 	
 	private Settings() {
@@ -63,16 +61,19 @@ public class Settings {
 		this.player2Name = name;
 	}
 	
-	public Boolean get1IsComputer(){
+	public Boolean get1IsComputer() {
 		return is1Computer;
 	}
-	public void set1IsComputer(boolean bool){
+	
+	public void set1IsComputer(boolean bool) {
 		is1Computer = bool;
 	}
-	public Boolean get2IsComputer(){
+	
+	public Boolean get2IsComputer() {
 		return is2Computer;
 	}
-	public void set2IsComputer(boolean bool){
+	
+	public void set2IsComputer(boolean bool) {
 		is2Computer = bool;
 	}
 	

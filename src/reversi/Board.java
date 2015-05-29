@@ -20,10 +20,8 @@ public class Board extends JPanel {
 	    this.game = game;
 	    this.width = width;
 	    this.height = height;
-	    Color color;
 	    Cell cell;
 	    Cord cord;
-	    Disk disk;
 	    Map<Integer, Cell> row;
 	    allCells = new HashMap<Integer, Map<Integer, Cell>>();
 		
@@ -33,9 +31,7 @@ public class Board extends JPanel {
     		
     		for (int j = 0; j < width; j++) {
     			cord = new Cord(i, j);
-    			
-    			cell = new Cell(cord, Color.gray, Disk.NONE, this, game);
-    			
+    			cell = new Cell(cord, Color.gray, Disk.NONE, this, game);   			
     			row.put(j, cell);
     			add(cell.getButton());
     		}
@@ -43,9 +39,6 @@ public class Board extends JPanel {
     	}
 		calcInit();
 		calcWillChange();
-	}
-	public Game getGame(){
-		return this.game;
 	}
 	
 	private void calcInit() {
@@ -109,7 +102,6 @@ public class Board extends JPanel {
 		if (willChange.get(Disk.BLACK).size() > 0 || willChange.get(Disk.WHITE).size() > 0) {
 			System.out.println(cell.getCord().toString() + " will change " + willChange.toString());
 		}
-
 	}
 	
 	public void addToMap(Map<Disk, Vector<Cell>> directionAns, Map<Disk, Vector<Cell>> willChange) {
@@ -201,6 +193,34 @@ public class Board extends JPanel {
 		calcWillChange(neighbour);
 	}
 	
-
+	Vector<Cell> getCorners() {
+		Vector<Cell> corners = new Vector<Cell>();
+		corners.add(allCells.get(0).get(0));
+		corners.add(allCells.get(0).get(width-1));
+		corners.add(allCells.get(height-1).get(0));
+		corners.add(allCells.get(height-1).get(width-1));
+		return corners;
+	}
+	
+	Vector<Cell> getEdges() {
+		Vector<Cell> edges = new Vector<Cell>();
+		edges.addAll(allCells.get(0).values());
+		edges.addAll(allCells.get(height-1).values());
+		for (int i = 1; i < height-1; i++) {
+			edges.add(allCells.get(i).get(0));
+			edges.add(allCells.get(i).get(width-1));
+		}
+		return edges;
+	}
+	
+	Vector<Cell> getInnerCells() {
+		Vector<Cell> inners = new Vector<Cell>();
+		for (int i = 1; i < height-1; i++) {
+			for (int j = 1; j < width-1; j++) {
+				inners.add(allCells.get(i).get(j));
+			}
+		}
+		return inners;
+	}
 	
 }

@@ -44,28 +44,30 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setLayout(new GridLayout(5, 1));
 		
-		SpinnerNumberModel heightModel = new SpinnerNumberModel(Settings.instance().getBoardHeight(), 4, 16, 1);
+		SpinnerNumberModel heightModel = new SpinnerNumberModel(Settings.instance().getBoardHeight(), 4, 10, 1);
 		heightSpinner = new JSpinner(heightModel);
 		
-		SpinnerNumberModel widthModel = new SpinnerNumberModel(Settings.instance().getBoardWidth(), 4, 16, 1);
+		SpinnerNumberModel widthModel = new SpinnerNumberModel(Settings.instance().getBoardWidth(), 4, 14, 1);
 		widthSpinner = new JSpinner(widthModel);
 		JPanel sizePane = makeSizePanel(heightSpinner, widthSpinner);
 		
 		player1Name = new JTextField();
 		player1Name.setColumns(10);
-		player1Name.setText("Player1");
+		player1Name.setText(Settings.instance().getPlayer1Name());
 		
 		player2Name = new JTextField();
 		player2Name.setColumns(10);
-		player2Name.setText("Player2");
+		player2Name.setText(Settings.instance().getPlayer2Name());
+		
+		boolean is1Computer = Settings.instance().get1IsComputer();
 		
 		player1Human = new JRadioButton("Human");
 		player1Human.setActionCommand("player1Human");
-		player1Human.setSelected(true);			//TODO - change default by current?
+		player1Human.setSelected(!is1Computer);		
 		
 		player1Computer = new JRadioButton("Computer");
 		player1Computer.setActionCommand("player1Computer");
-		player1Computer.setSelected(false);
+		player1Computer.setSelected(is1Computer);
 		
 		player1Group = new ButtonGroup();
 		player1Group.add(player1Human);
@@ -73,13 +75,15 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		
 		JPanel player1Panel = makePlayerPanel(player1Name, player1Human, player1Computer);
 		
+		boolean is2Computer = Settings.instance().get2IsComputer();
+		
 		player2Human = new JRadioButton("Human");
 		player2Human.setActionCommand("player2Human");
-		player2Human.setSelected(true);			//TODO - change default by current?
+		player2Human.setSelected(!is2Computer);			
 		
 		player2Computer = new JRadioButton("Computer");
 		player2Computer.setActionCommand("player2Computer");
-		player2Computer.setSelected(false);
+		player2Computer.setSelected(is2Computer);
 		
 		player2Group = new ButtonGroup();
 		player2Group.add(player2Human);

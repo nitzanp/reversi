@@ -18,6 +18,8 @@ public abstract class Player {
 	
 	public abstract boolean isComputer();
 	
+	public void play(Board board) {}
+	
 	public String getName() {
 		String name;
 		switch (num) {

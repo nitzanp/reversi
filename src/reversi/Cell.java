@@ -121,46 +121,11 @@ public class Cell implements MouseListener {
 		button.setBackground(color);
 	}
 	
-	@Override
-	public String toString() {
-		return cord.toString();
-	}
-
-	
-	@Override
-	public void mouseExited(MouseEvent e) {
+	public void makeMove() {
 		Disk curr = game.getCurrPlayer().getDisk();
-//		for (Cell cell : willChange.get(curr)) {
-//			cell.backToOrigin();
-//		}
-
-//		boolean legal = (curr == Disk.BLACK && blackLegal) || (curr == Disk.WHITE && whiteLegal);
-
-		if (changed.size() > 0) {
-			for (Cell cell : changed) {
-				cell.backToOrigin();
-			}
-			changed = new Vector<Cell>();
-		}
-		//			if (legal) {
-		else {
-			for (Cell cell : willChange.get(curr)) {
-				cell.backToOrigin();
-			}
-			backToOrigin();
-		}
-
-	}
-	
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		Disk curr = game.getCurrPlayer().getDisk();
-		//int flipped = 0;
 		boolean change = false;
 		for (Cell cell : willChange.get(curr)) {
 			if (this.getDisk().equals(Disk.NONE)){
-				//flipped++;
 				cell.flip();
 				changed.add(cell);
 				change = true;
@@ -176,10 +141,39 @@ public class Cell implements MouseListener {
 			board.cellChanged(this);
 			board.calcWillChange();
 			
-			//game.setScore(flipped);
 			game.setScore(changed.size());
 			game.switchPlayer();
-		}		
+		}
+	}
+	
+	@Override
+	public String toString() {
+		return cord.toString();
+	}
+
+	
+	@Override
+	public void mouseExited(MouseEvent e) {
+		Disk curr = game.getCurrPlayer().getDisk();
+
+		if (changed.size() > 0) {
+			for (Cell cell : changed) {
+				cell.backToOrigin();
+			}
+			changed = new Vector<Cell>();
+		}
+		else {
+			for (Cell cell : willChange.get(curr)) {
+				cell.backToOrigin();
+			}
+			backToOrigin();
+		}
+	}
+	
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		makeMove();	
 	}
 
 	@Override
@@ -191,35 +185,19 @@ public class Cell implements MouseListener {
 				cell.markAsLegal();
 			}
 			markAsLegal();
-		}
-		
-		
-//		for (Cell cell : willChange.get(curr)) {
-//			if (this.getDisk().equals(Disk.NONE)){
-//				cell.button.setBackground(Color.pink);
-//			}
-//			
-//		}
-		
+		}	
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void mouseReleased(MouseEvent e) {		
 	}
 
 	public Color getColor() {
 		return this.color;
 	}
 
-			
-		
-	
 }

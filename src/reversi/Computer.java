@@ -1,6 +1,6 @@
 package reversi;
 
-import java.util.Map;
+import java.util.Vector;
 
 public class Computer extends Player  {
 
@@ -33,37 +33,47 @@ public class Computer extends Player  {
 		return this.disk == player.getDisk();
 	}
 	
-	public void play(Board board){
-		int max=0;
+	public Cell searchForMax(Vector<Cell> allCells) {
+		int max = 0;
 		Cell cellToPut = null;
-		for (Map<Integer, Cell> row : board.getAllCells().values()) {
-			int moves=0;
-			for (Cell cell : row.values()) {
-				if (cell.getCellWillChange().get(disk).size() > 0 && cell.isLegal(disk) && cell.isEmpty()) {
-					moves = cell.getCellWillChange().get(disk).size();
-				}
-				if (moves > max){
-					
-					max=moves;
-					cellToPut=cell;
-				}
+		int moves = 0;
+		
+		for (Cell cell : allCells) {
+			if (cell.isLegal(disk) && cell.isEmpty()) {
+				moves = cell.getCellWillChange().get(disk).size();
+			}
+			if (moves > max) {
+				max = moves;
+				cellToPut = cell;
+				moves = 0;
 			}
 		}
-		cellToPut.setDisk(disk);
-		for (Cell cell : cellToPut.getCellWillChange().get(cellToPut.getDisk())) {
-			cell.getButton().setBackground(cellToPut.getColor());
-			cell.flip();
-		}
+		return cellToPut;
+	}
+	
+	public Cell searchForMove(Board board) {
+		Cell cellToPut = null;
 		
-		board.cellChanged(cellToPut);
-		board.calcWillChange();
-		board.getGame().setScore(max);
-		board.getGame().switchPlayer();
-			
+		cellToPut = searchForMax(board.getCorners());
+		if (cellToPut != null)
+			return cellToPut;
+		
+		cellToPut = searchForMax(board.getEdges());
+		if (cellToPut != null)
+			return cellToPut;
+		
+		cellToPut = searchForMax(board.getInnerCells());
+		return cellToPut;
+	}
+	
+	public void play(Board board) {
+		Cell cellToPut = searchForMove(board);
+		if (cellToPut != null)
+			cellToPut.makeMove();	
 	}
 
 	public boolean isComputer() {
-		return false;
+		return true;
 	}
 }
 
