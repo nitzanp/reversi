@@ -11,7 +11,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class Cell implements MouseListener {
-	
 
 	private Game game;
 	private Cord cord;
@@ -23,9 +22,8 @@ public class Cell implements MouseListener {
 	private boolean blackLegal;
 	private Board board;
 	private Vector<Cell> changed;
-	
+
 	public Cell() {
-		//game = game;
 		cord = new Cord();
 		color = Color.WHITE;
 		button = new JButton(cord.getI() + "," + cord.getJ());
@@ -34,7 +32,7 @@ public class Cell implements MouseListener {
 		willChange = new HashMap<Disk, Vector<Cell>>();
 		board = null;
 	}
-	
+
 	public Cell(Cord cord, Color color, Disk disk, Board board, Game game) {
 		this.game = game;
 		this.cord = cord;
@@ -45,38 +43,36 @@ public class Cell implements MouseListener {
 		this.willChange = new HashMap<Disk, Vector<Cell>>();
 		this.board = board;
 		this.changed = new Vector<Cell>();
-		button = new JButton();
 
+		button = new JButton();
 		button.setBackground(color);
-		//button.setText(cord.toString());
 		button.addMouseListener(this);
 		setIconByDisk(disk);
 	}
-	
+
 	public JButton getButton() {
 		return this.button;
 	}
-	
+
 	public Disk getDisk() {
 		return this.disk;
 	}
-	
+
 	public void setDisk(Disk changeTo) {
 		this.disk = changeTo;
 		setIconByDisk(disk);
 	}
-	
+
 	public Cord getCord() {
 		return this.cord;
 	}
-	
-	public void setWillChange(Map<Disk, Vector<Cell>> willChange) {
-			this.willChange = willChange;
-			blackLegal =  (willChange.get(Disk.BLACK).size() > 0) ? true : false;
-			whiteLegal =  (willChange.get(Disk.WHITE).size() > 0) ? true : false;
 
+	public void setWillChange(Map<Disk, Vector<Cell>> willChange) {
+		this.willChange = willChange;
+		blackLegal =  (willChange.get(Disk.BLACK).size() > 0) ? true : false;
+		whiteLegal =  (willChange.get(Disk.WHITE).size() > 0) ? true : false;
 	}
-	
+
 	public boolean isLegal(Disk disk) {
 		if (disk == Disk.WHITE)
 			return whiteLegal;
@@ -84,26 +80,26 @@ public class Cell implements MouseListener {
 			return blackLegal;
 		return false;
 	}
-	
+
 	public boolean isEmpty(){
 		return this.disk == Disk.NONE;
 	}
-	
+
 	public void setIconByDisk(Disk disk) {
-		String path = this.getClass().getClassLoader().getResource("").getPath(); //need to check if works in every computer
+		String path = this.getClass().getClassLoader().getResource("").getPath(); //TODO need to check if works in every computer
 		String BLACK_PIC = path + "black.png";
-	    String WHITE_PIC = path + "white.png";
+		String WHITE_PIC = path + "white.png";
+
 		if (disk != Disk.NONE) {
 			String pic = (disk == Disk.BLACK) ? BLACK_PIC : WHITE_PIC;
 			ImageIcon img = new ImageIcon(pic);
 			button.setIcon(img);
-
 		}
 		else {
 			button.setIcon(null);
 		}
 	}
-	
+
 	public void flip() {
 		setDisk(this.disk.getOpposite());
 		backToOrigin();
@@ -112,15 +108,15 @@ public class Cell implements MouseListener {
 	public Map<Disk, Vector<Cell>>  getCellWillChange (){
 		return willChange;
 	}
-	
+
 	public void markAsLegal() {
 		button.setBackground(Color.pink);
 	}
-	
+
 	public void backToOrigin() {
 		button.setBackground(color);
 	}
-	
+
 	public void makeMove() {
 		Disk curr = game.getCurrPlayer().getDisk();
 		boolean change = false;
@@ -134,23 +130,22 @@ public class Cell implements MouseListener {
 		if (change) {
 			this.setDisk(curr);
 			backToOrigin();
-			
+
 			for (Cell cell : willChange.get(curr)) {
-		        cell.button.setBackground(cell.color);
+				cell.button.setBackground(cell.color);
 			}
 			board.calcWillChange();
-			
+
 			game.setScore(changed.size());
 			game.switchPlayer();
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return cord.toString();
 	}
 
-	
 	@Override
 	public void mouseExited(MouseEvent e) {
 		Disk curr = game.getCurrPlayer().getDisk();
@@ -168,7 +163,7 @@ public class Cell implements MouseListener {
 			backToOrigin();
 		}
 	}
-	
+
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -188,15 +183,9 @@ public class Cell implements MouseListener {
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-	}
+	public void mousePressed(MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {		
-	}
-
-	public Color getColor() {
-		return this.color;
-	}
+	public void mouseReleased(MouseEvent e) {}
 
 }

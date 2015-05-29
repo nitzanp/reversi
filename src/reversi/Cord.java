@@ -3,33 +3,25 @@ package reversi;
 public class Cord {
 	private int i;
 	private int j;
-	
+
 	public Cord() {
-		setI(0);
-		setJ(0);
+		i = 0;
+		j = 0;
 	}
-	
+
 	public Cord(int i, int j) {
-		this.setI(i);
-		this.setJ(j);
+		this.i = i;
+		this.j = j;
 	}
 
 	public int getI() {
 		return i;
 	}
 
-	public void setI(int i) {
-		this.i = i;
-	}
-
 	public int getJ() {
 		return j;
 	}
 
-	public void setJ(int j) {
-		this.j = j;
-	}
-	
 	public Cord getNextCord(Direction dir) {
 		switch (dir) {
 		case UP:
@@ -51,11 +43,7 @@ public class Cord {
 		}
 		return null;
 	}
-	
-//	public Cord getNextRightCord() {
-//		return new Cord(i, j + 1);
-//	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Cord) {
@@ -63,7 +51,7 @@ public class Cord {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "(" + i + "," + j + ")";

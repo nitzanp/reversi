@@ -19,9 +19,9 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
 public class SettingsFrame extends JFrame implements ActionListener {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private Game currGame;
 	private JSpinner heightSpinner;
 	private JSpinner widthSpinner;
@@ -35,82 +35,78 @@ public class SettingsFrame extends JFrame implements ActionListener {
 	private JRadioButton player2Human;
 	private JRadioButton player2Computer;
 	private ButtonGroup player2Group;
-	
+
 	public SettingsFrame(Game game) {
 		super("Settings");
-		
 		this.currGame = game;
-		
+
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setLayout(new GridLayout(5, 1));
-		
+
 		SpinnerNumberModel heightModel = new SpinnerNumberModel(Settings.instance().getBoardHeight(), 4, 10, 1);
-		heightSpinner = new JSpinner(heightModel);
-		
 		SpinnerNumberModel widthModel = new SpinnerNumberModel(Settings.instance().getBoardWidth(), 4, 14, 1);
+		heightSpinner = new JSpinner(heightModel);
 		widthSpinner = new JSpinner(widthModel);
 		JPanel sizePane = makeSizePanel(heightSpinner, widthSpinner);
-		
+
 		player1Name = new JTextField();
 		player1Name.setColumns(10);
 		player1Name.setText(Settings.instance().getPlayer1Name());
-		
+
 		player2Name = new JTextField();
 		player2Name.setColumns(10);
 		player2Name.setText(Settings.instance().getPlayer2Name());
-		
+
 		boolean is1Computer = Settings.instance().get1IsComputer();
-		
+
 		player1Human = new JRadioButton("Human");
 		player1Human.setActionCommand("player1Human");
 		player1Human.setSelected(!is1Computer);		
-		
+
 		player1Computer = new JRadioButton("Computer");
 		player1Computer.setActionCommand("player1Computer");
 		player1Computer.setSelected(is1Computer);
-		
+
 		player1Group = new ButtonGroup();
 		player1Group.add(player1Human);
 		player1Group.add(player1Computer);
-		
+
 		JPanel player1Panel = makePlayerPanel(player1Name, player1Human, player1Computer);
-		
+
 		boolean is2Computer = Settings.instance().get2IsComputer();
-		
+
 		player2Human = new JRadioButton("Human");
 		player2Human.setActionCommand("player2Human");
 		player2Human.setSelected(!is2Computer);			
-		
+
 		player2Computer = new JRadioButton("Computer");
 		player2Computer.setActionCommand("player2Computer");
 		player2Computer.setSelected(is2Computer);
-		
+
 		player2Group = new ButtonGroup();
 		player2Group.add(player2Human);
 		player2Group.add(player2Computer);
-		
+
 		JPanel player2Panel = makePlayerPanel(player2Name, player2Human, player2Computer);
-		
+
 		save = new JButton("SAVE");
 		save.addActionListener(this);
-		
+
 		discard = new JButton("DISCARD");
 		discard.addActionListener(this);
-		
+
 		getContentPane().add(sizePane);
 		getContentPane().add(player1Panel);
 		getContentPane().add(player2Panel);
 		getContentPane().add(save);
 		getContentPane().add(discard);
-		this.setSize(300, 300);
-		this.setLocationRelativeTo(null);
-		
+
+		setSize(300, 300);
+		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
-	
-		
 	}
-	
+
 	private JPanel makeSizePanel(JSpinner height, JSpinner width) {
 		JPanel tPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		tPane.setMaximumSize(new Dimension(250, 50));
@@ -122,53 +118,47 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		tPane.add(height);
 		tPane.add(label2);
 		tPane.add(width);
-		
+
 		return tPane;
 	}
-	
+
 	private JPanel makePlayerPanel(JTextField name, JRadioButton human, JRadioButton computer) {
 		JPanel tPane = new JPanel(new BorderLayout());
 		tPane.setMaximumSize(new Dimension(250, 50));
 		tPane.setMinimumSize(new Dimension(250, 50));
-		
+
 		tPane.add(name, BorderLayout.NORTH);
 		tPane.add(human, BorderLayout.WEST);
 		tPane.add(computer, BorderLayout.EAST);
 
-		
 		return tPane;
-	}
-	
-	public JSpinner getSizeSpinner() {
-		return heightSpinner;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	
-	    if (e.getSource().equals(save)) {
+		if (e.getSource().equals(save)) {
 			String player1 = player1Name.getText();
 			Settings.instance().setPlayer1Name(player1);
-			
+
 			String player2 = player2Name.getText();
 			Settings.instance().setPlayer2Name(player2);
-			
+
 			Settings.instance().setBoardHeight((Integer)heightSpinner.getValue());
 			Settings.instance().setBoardWidth((Integer)widthSpinner.getValue());
-			
+
 			boolean player1IsComputer = (player1Computer.isSelected()) ? true : false;
 			boolean player2IsComputer = (player2Computer.isSelected()) ? true : false;	
 			Settings.instance().set1IsComputer(player1IsComputer);
 			Settings.instance().set2IsComputer(player2IsComputer);
-	    	
-	    	new Menu(null);	
+
+			new Menu(null);	
 			this.dispose();
-	    }
-	    
-	    if (e.getSource().equals(discard)) {
-	    	new Menu(currGame);
+		}
+
+		if (e.getSource().equals(discard)) {
+			new Menu(currGame);
 			this.dispose();
-	    }
+		}
 	}
 
 }

@@ -1,10 +1,10 @@
 package reversi;
 
 public class Human extends Player {
-	
+
 	private Disk disk;
 	private int score;
-	
+
 	public Human(Disk disk, int num) {
 		super(num);
 		this.disk = disk;
@@ -12,23 +12,19 @@ public class Human extends Player {
 	}
 
 	public Disk getDisk() {
-			return disk;
+		return disk;
 	}
-	
+
 	public int getScore(){
 		return score;
 	}
-	
+
 	public void setScore(int newScore){
 		this.score = newScore;
-	}
-	
-	public boolean isEqual(Player player) {
-		return this.disk == player.getDisk();
 	}
 
 	public boolean isComputer() {
 		return false;
 	}
-	
+
 }

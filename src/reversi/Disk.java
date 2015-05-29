@@ -2,7 +2,7 @@ package reversi;
 
 public enum Disk {
 	BLACK, WHITE, NONE;
-	
+
 	public Disk getOpposite() {
 		if (this == BLACK)
 			return WHITE;
@@ -10,10 +10,8 @@ public enum Disk {
 			return BLACK;
 		return NONE;
 	}
-	
-	
+
 	public boolean isOppisite(Disk disk) {
 		return this.getOpposite() == disk;
 	}
-	
 }

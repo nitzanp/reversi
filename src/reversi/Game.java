@@ -15,7 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
+@SuppressWarnings("serial")
 public class Game extends JFrame implements ActionListener {
 
 	private  Player currPlayer;
@@ -30,7 +30,6 @@ public class Game extends JFrame implements ActionListener {
 	public static int col;
 	private Player player1;
 	private Player player2;
-
 
 	public Game(Player player1, Player player2){
 		super("Game");
@@ -74,14 +73,11 @@ public class Game extends JFrame implements ActionListener {
 		getContentPane().add(optionsPanel, BorderLayout.NORTH);
 		getContentPane().add(boardPanel, BorderLayout.CENTER);
 
-		//Place at center
-		//Methods.placeAtCenter(this, this.getSize().width, this.getSize().height);
-
 		startGame();
 		pack();
 		setVisible(true);
 	}
-	
+
 	public void startGame() {
 		if (player1.isComputer() && !player2.isComputer()) {
 			player2.play(board);
@@ -106,7 +102,7 @@ public class Game extends JFrame implements ActionListener {
 	}
 
 	public void noValidMoves() {
-		Player otherPlayer = (currPlayer.isEqual(player1)) ? player2 : player1;
+		Player otherPlayer = (currPlayer.equals(player1)) ? player2 : player1;
 
 		if (validMoves(otherPlayer) == 0) {
 			endGame();
@@ -119,7 +115,6 @@ public class Game extends JFrame implements ActionListener {
 	}
 
 	public void noValidMovesDialog() {
-
 		final JDialog dialog = new JDialog(this, "No valid moves", true);
 		dialog.setSize(200,100);
 		dialog.setLayout(new BorderLayout());
@@ -142,15 +137,14 @@ public class Game extends JFrame implements ActionListener {
 
 
 	public void switchPlayer() {
-
-		currPlayer = (currPlayer.isEqual(player1)) ? player2 : player1;
+		currPlayer = (currPlayer.equals(player1)) ? player2 : player1;
 
 		if (validMoves(currPlayer) == 0) {
 			noValidMoves();
 			return;
 		}
 
-		if (currPlayer.isEqual(player1)){
+		if (currPlayer.equals(player1)){
 			player1Button.setBackground(Color.RED);
 			player2Button.setBackground(SystemColor.text);	
 		}
@@ -189,11 +183,10 @@ public class Game extends JFrame implements ActionListener {
 
 		dialog.setLocationRelativeTo(null);
 		dialog.setVisible(true);
-
 	}
 
 	public void setScore(int flipped) {
-		if (currPlayer.isEqual(player1)){
+		if (currPlayer.equals(player1)){
 			player1.setScore(player1.getScore() + flipped + 1);
 			player2.setScore(player2.getScore() - flipped);
 		}
@@ -205,7 +198,6 @@ public class Game extends JFrame implements ActionListener {
 		player2Button.setText(scoreString(player2));
 	}
 
-
 	public String scoreString(Player player) {
 		StringBuilder sb = new StringBuilder();
 		String name = player.getName();
@@ -213,22 +205,24 @@ public class Game extends JFrame implements ActionListener {
 		sb.append(" : ").append(player.getScore());
 		return sb.toString();			
 	}
-	
-	public void actionPerformed(ActionEvent e) {
-		Player player1 = (Settings.instance().get1IsComputer()) ? new Computer(Disk.WHITE, 1) : new Human(Disk.WHITE, 1);
-		Player player2 = (Settings.instance().get2IsComputer()) ? new Computer(Disk.BLACK, 2) : new Human(Disk.BLACK, 2);
 
+	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(newGame)) {
+			Player player1 = (Settings.instance().get1IsComputer()) ? new Computer(Disk.WHITE, 1) : new Human(Disk.WHITE, 1);
+			Player player2 = (Settings.instance().get2IsComputer()) ? new Computer(Disk.BLACK, 2) : new Human(Disk.BLACK, 2);
 			new Game(player1, player2);
 			this.dispose();
 		}
+
 		if (e.getSource().equals(exitGame)) {
 			System.exit(0);
 		}
+
 		if (e.getSource().equals(backToMenu)) {
 			new Menu(this);	
 			this.setVisible(false);
 		}
+
 		if (e.getSource().equals(gameEnded)) {
 			new Menu(null);
 			this.setVisible(false);
