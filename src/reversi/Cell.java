@@ -138,7 +138,6 @@ public class Cell implements MouseListener {
 			for (Cell cell : willChange.get(curr)) {
 		        cell.button.setBackground(cell.color);
 			}
-			board.cellChanged(this);
 			board.calcWillChange();
 			
 			game.setScore(changed.size());

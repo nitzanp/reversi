@@ -156,22 +156,10 @@ public class SettingsFrame extends JFrame implements ActionListener {
 			Settings.instance().setBoardHeight((Integer)heightSpinner.getValue());
 			Settings.instance().setBoardWidth((Integer)widthSpinner.getValue());
 			
-			if (player1Human.isSelected()) {
-				Settings.instance().set1IsComputer(false);
-				System.out.println("player1 is human");
-			}
-			if (player1Computer.isSelected()) {
-				Settings.instance().set1IsComputer(true);
-				System.out.println("player1 is computer");
-			}
-			if (player2Human.isSelected()) {
-				Settings.instance().set2IsComputer(false);
-				System.out.println("player2 is human");
-			}
-			if (player2Computer.isSelected()) {
-				Settings.instance().set2IsComputer(true);
-				System.out.println("player2 is computer");
-			}
+			boolean player1IsComputer = (player1Computer.isSelected()) ? true : false;
+			boolean player2IsComputer = (player2Computer.isSelected()) ? true : false;	
+			Settings.instance().set1IsComputer(player1IsComputer);
+			Settings.instance().set2IsComputer(player2IsComputer);
 	    	
 	    	new Menu(null);	
 			this.dispose();
@@ -181,7 +169,6 @@ public class SettingsFrame extends JFrame implements ActionListener {
 	    	new Menu(currGame);
 			this.dispose();
 	    }
-		
 	}
 
 }

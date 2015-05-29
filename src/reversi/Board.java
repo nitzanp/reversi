@@ -98,10 +98,6 @@ public class Board extends JPanel {
 		addToMap(directionAns, willChange);
 		
 		cell.setWillChange(willChange);	
-		
-		if (willChange.get(Disk.BLACK).size() > 0 || willChange.get(Disk.WHITE).size() > 0) {
-			System.out.println(cell.getCord().toString() + " will change " + willChange.toString());
-		}
 	}
 	
 	public void addToMap(Map<Disk, Vector<Cell>> directionAns, Map<Disk, Vector<Cell>> willChange) {
@@ -160,37 +156,6 @@ public class Board extends JPanel {
 		}
 		
 		return new Vector<Cell>();
-	}
-	
-	public void cellChanged(Cell cell) {
-		Cord cord = cell.getCord();
-		Cell neighbour;
-		
-		System.out.println(game.getCurrPlayer().getDisk() + " changed " + cord.toString());
-		
-		neighbour = getCellByCord(cord.getNextCord(Direction.UP));
-		calcWillChange(neighbour);
-		
-		neighbour = getCellByCord(cord.getNextCord(Direction.DOWN));
-		calcWillChange(neighbour);
-		
-		neighbour = getCellByCord(cord.getNextCord(Direction.LEFT));
-		calcWillChange(neighbour);
-		
-		neighbour = getCellByCord(cord.getNextCord(Direction.RIGHT));
-		calcWillChange(neighbour);
-		
-		neighbour = getCellByCord(cord.getNextCord(Direction.UPLEFT));
-		calcWillChange(neighbour);
-		
-		neighbour = getCellByCord(cord.getNextCord(Direction.UPRIGHT));
-		calcWillChange(neighbour);
-		
-		neighbour = getCellByCord(cord.getNextCord(Direction.DOWNLEFT));
-		calcWillChange(neighbour);
-		
-		neighbour = getCellByCord(cord.getNextCord(Direction.DOWNRIGHT));
-		calcWillChange(neighbour);
 	}
 	
 	Vector<Cell> getCorners() {

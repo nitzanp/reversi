@@ -19,7 +19,6 @@ import javax.swing.JPanel;
 public class Game extends JFrame implements ActionListener {
 
 	private  Player currPlayer;
-
 	private Board board;
 	private JButton newGame;
 	private JButton backToMenu;
@@ -34,10 +33,8 @@ public class Game extends JFrame implements ActionListener {
 
 
 	public Game(Player player1, Player player2){
-
 		super("Game");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 		setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
 
 		int height = Settings.instance().getBoardHeight();
@@ -51,21 +48,14 @@ public class Game extends JFrame implements ActionListener {
 		JPanel optionsPanel = new JPanel();
 		JPanel boardPanel = new JPanel();
 
-
-		// Create buttons
 		newGame = new JButton("NEW GAME");
-		//newGame.setBounds(60, 50, 220, 50);
 		backToMenu = new JButton("MENU");
-		//backToMenu.setBounds(280, 50, 220, 50);
 		exitGame = new JButton("EXIT");
-		//exitGame.setBounds(500, 50, 220, 50);
 		player1Button = new JButton(scoreString(player1));
 		player1Button.setBackground(Color.RED);
 		player2Button = new JButton(scoreString(player2));
 		player2Button.setBackground(Color.WHITE);
 
-
-		// Add action listeners
 		newGame.addActionListener(this);
 		exitGame.addActionListener(this);
 		backToMenu.addActionListener(this);
@@ -87,10 +77,19 @@ public class Game extends JFrame implements ActionListener {
 		//Place at center
 		//Methods.placeAtCenter(this, this.getSize().width, this.getSize().height);
 
-		if(player1.isComputer())
-			((Computer)player1).play(board);
+		startGame();
 		pack();
 		setVisible(true);
+	}
+	
+	public void startGame() {
+		if (player1.isComputer() && !player2.isComputer()) {
+			player2.play(board);
+			switchPlayer();
+		}
+		else {
+			player1.play(board);
+		}
 	}
 
 	public int validMoves(Player player) {
@@ -110,7 +109,6 @@ public class Game extends JFrame implements ActionListener {
 		Player otherPlayer = (currPlayer.isEqual(player1)) ? player2 : player1;
 
 		if (validMoves(otherPlayer) == 0) {
-			System.out.println("GAME ENDED!!");
 			endGame();
 		}
 
@@ -222,7 +220,6 @@ public class Game extends JFrame implements ActionListener {
 
 		if (e.getSource().equals(newGame)) {
 			new Game(player1, player2);
-
 			this.dispose();
 		}
 		if (e.getSource().equals(exitGame)) {
