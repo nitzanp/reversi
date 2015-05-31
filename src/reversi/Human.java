@@ -1,9 +1,13 @@
 package reversi;
 
-public class Human extends Player {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Human extends Player implements Serializable{
 
 	private Disk disk;
 	private int score;
+
 
 	public Human(Disk disk, int num) {
 		super(num);
@@ -26,5 +30,6 @@ public class Human extends Player {
 	public boolean isComputer() {
 		return false;
 	}
+	
 
 }

@@ -7,7 +7,12 @@ import java.awt.FlowLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Map;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -15,13 +20,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-@SuppressWarnings("serial")
-public class Game extends JFrame implements ActionListener {
-
+public class Game extends JFrame implements ActionListener, Serializable {
+	 
+	private static final long serialVersionUID = 1L;
 	private  Player currPlayer;
 	private Board board;
 	private JButton newGame;
 	private JButton backToMenu;
+	private JButton save;
 	private JButton exitGame;
 	private JButton gameEnded;
 	private JButton player1Button;
@@ -30,11 +36,12 @@ public class Game extends JFrame implements ActionListener {
 	public static int col;
 	private Player player1;
 	private Player player2;
-
-	public Game(Player player1, Player player2){
+	private ScoreTable scores;
+	
+	public Game(Player player1, Player player2, ScoreTable scores){
 		super("Game");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+		//setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
 
 		int height = Settings.instance().getBoardHeight();
 		int width = Settings.instance().getBoardWidth();
@@ -46,9 +53,10 @@ public class Game extends JFrame implements ActionListener {
 
 		JPanel optionsPanel = new JPanel();
 		JPanel boardPanel = new JPanel();
-
+		
 		newGame = new JButton("NEW GAME");
 		backToMenu = new JButton("MENU");
+		save = new JButton("SAVE");
 		exitGame = new JButton("EXIT");
 		player1Button = new JButton(scoreString(player1));
 		player1Button.setBackground(Color.RED);
@@ -57,6 +65,7 @@ public class Game extends JFrame implements ActionListener {
 
 		newGame.addActionListener(this);
 		exitGame.addActionListener(this);
+		save.addActionListener(this);
 		backToMenu.addActionListener(this);
 		player1Button.addActionListener(this);
 		player2Button.addActionListener(this);
@@ -67,24 +76,81 @@ public class Game extends JFrame implements ActionListener {
 		optionsPanel.add(newGame);
 		optionsPanel.add(backToMenu);
 		optionsPanel.add(player2Button);
+		optionsPanel.add(save);
+
+
+		boardPanel.add(board);
+
+		getContentPane().add(optionsPanel, BorderLayout.NORTH);
+		getContentPane().add(boardPanel, BorderLayout.CENTER);
+		
+		
+		pack();
+		setLocationRelativeTo(null);
+		setVisible(true);
+	}
+
+	public Game(Game loadedGame) {
+		super("Game");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+		getContentPane().setLayout(new BorderLayout());
+		
+		board = loadedGame.board;
+		this.player1 = loadedGame.player1;
+		this.player2 = loadedGame.player2;
+		currPlayer = loadedGame.currPlayer;
+		
+		JPanel optionsPanel = new JPanel();
+		JPanel boardPanel = new JPanel();
+
+		newGame = new JButton("NEW GAME");
+		backToMenu = new JButton("MENU");
+		save = new JButton("SAVE");
+		exitGame = new JButton("EXIT");
+		player1Button = new JButton(loadedGame.scoreString(player1));
+		player1Button.setBackground(Color.RED);
+		player2Button = new JButton(loadedGame.scoreString(player2));
+		player2Button.setBackground(Color.WHITE);
+
+		newGame.addActionListener(this);
+		exitGame.addActionListener(this);
+		save.addActionListener(this);
+		backToMenu.addActionListener(this);
+		player1Button.addActionListener(this);
+		player2Button.addActionListener(this);
+
+		optionsPanel.setLayout(new FlowLayout());
+		optionsPanel.add(player1Button);
+		optionsPanel.add(exitGame);
+		optionsPanel.add(newGame);
+		optionsPanel.add(backToMenu);
+		optionsPanel.add(player2Button);
+		optionsPanel.add(save);
+
 
 		boardPanel.add(board);
 
 		getContentPane().add(optionsPanel, BorderLayout.NORTH);
 		getContentPane().add(boardPanel, BorderLayout.CENTER);
 
-		startGame();
+		if (loadedGame.currPlayer.isComputer()) 
+			loadedGame.currPlayer.play(board);
+		
 		pack();
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
 	public void startGame() {
-		if (player1.isComputer() && !player2.isComputer()) {
-			player2.play(board);
-			switchPlayer();
-		}
-		else {
-			player1.play(board);
+		if (player1.isComputer() && player2.isComputer()) {
+			Random rn = new Random();
+			int rand = rn.nextInt(2);
+			if (rand == 0)
+				player2.play(board);
+			else 
+				player1.play(board);
+		
 		}
 	}
 
@@ -202,15 +268,14 @@ public class Game extends JFrame implements ActionListener {
 		StringBuilder sb = new StringBuilder();
 		String name = player.getName();
 		sb.append(name).append(" - ").append(player.getDisk().toString());
-		sb.append(" : ").append(player.getScore());
 		return sb.toString();			
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(newGame)) {
-			Player player1 = (Settings.instance().get1IsComputer()) ? new Computer(Disk.WHITE, 1) : new Human(Disk.WHITE, 1);
-			Player player2 = (Settings.instance().get2IsComputer()) ? new Computer(Disk.BLACK, 2) : new Human(Disk.BLACK, 2);
-			new Game(player1, player2);
+			Random rn = new Random();
+			int rand = rn.nextInt(2);
+			setTurns(rand);
 			this.dispose();
 		}
 
@@ -219,14 +284,88 @@ public class Game extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource().equals(backToMenu)) {
-			new Menu(this);	
+			new Menu(this, this.scores);	
 			this.setVisible(false);
+		}
+		if (e.getSource().equals(save)) {
+			saveGame();
 		}
 
 		if (e.getSource().equals(gameEnded)) {
-			new Menu(null);
+			new Menu(this, scores);
 			this.setVisible(false);
 		}
 	}
+	
+	private void setTurns(int rand){
+		/*computer vs human*/
+		if (Settings.instance().get2IsComputer() && !Settings.instance().get1IsComputer()){
+			player1 = new Human(Disk.WHITE, 1);
+			player2 = new Computer(Disk.BLACK, 2);
+			new Game(player1, player2, scores);
 
+		}
+		if (Settings.instance().get1IsComputer() && !Settings.instance().get2IsComputer()){
+			player1 = new Computer(Disk.BLACK, 1);
+			player2 = new Human(Disk.WHITE, 2);	
+			new Game(player2, player1, scores);
+		}
+		/*computer vs computer*/
+		if (Settings.instance().get1IsComputer() && Settings.instance().get2IsComputer()){
+			if (rand == 0){
+				player1 = new Computer(Disk.WHITE, 1);
+				player2 = new Computer(Disk.BLACK, 2);
+				new Game(player1, player2, scores);
+			}
+			else {
+				player1 = new Computer(Disk.WHITE, 1);
+				player2 = new Computer(Disk.BLACK, 2);
+				new Game(player2, player1, scores);
+			}
+		}
+			/*both humans*/
+			if(!Settings.instance().get1IsComputer() && !Settings.instance().get2IsComputer()){
+				if (rand == 0){
+					player1 = new Human(Disk.WHITE, 1);
+					player2 = new Human(Disk.BLACK, 2);
+					new Game(player1, player2, scores);
+
+				}
+				else {
+					player1 = new Human(Disk.BLACK, 1);
+					player2 = new Human(Disk.WHITE, 2);	
+					new Game(player2, player1, scores);
+				}
+			}
+	}
+	private void saveGame(){
+		String path = this.getClass().getClassLoader().getResource("").getPath(); //TODO need to check if works in every computer
+
+		try {
+		FileOutputStream fout = new FileOutputStream(path + "\\savedGame.sav");
+		ObjectOutputStream oos = new ObjectOutputStream(fout);
+		oos.writeObject(this);
+		oos.close();
+		
+		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public ScoreTable getScores(){
+		return scores;
+	}
+
+	public Player getPlayer1() {
+		return player1;
+	}
+	public Player getPlayer2() {
+		return player1;
+	}
+	
+
+	
 }
+

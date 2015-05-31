@@ -2,6 +2,7 @@ package reversi;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -9,7 +10,7 @@ import java.util.Vector;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class Board extends JPanel {
+public class Board extends JPanel implements Serializable {
 	private int width;
 	private int height;
 	private Map<Integer, Map<Integer, Cell>> allCells;

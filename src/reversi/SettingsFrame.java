@@ -35,11 +35,12 @@ public class SettingsFrame extends JFrame implements ActionListener {
 	private JRadioButton player2Human;
 	private JRadioButton player2Computer;
 	private ButtonGroup player2Group;
+	private ScoreTable scores;
 
-	public SettingsFrame(Game game) {
+	public SettingsFrame(Game game, ScoreTable scores) {
 		super("Settings");
 		this.currGame = game;
-
+		this.scores = scores;
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setLayout(new GridLayout(5, 1));
 
@@ -150,13 +151,17 @@ public class SettingsFrame extends JFrame implements ActionListener {
 			boolean player2IsComputer = (player2Computer.isSelected()) ? true : false;	
 			Settings.instance().set1IsComputer(player1IsComputer);
 			Settings.instance().set2IsComputer(player2IsComputer);
-
-			new Menu(null);	
+			
+			new Menu(null, scores);
+			
+			if (this.scores != null)
+				this.scores.setVisible(false);
+			scores = new ScoreTable(player1, player2);
 			this.dispose();
 		}
 
 		if (e.getSource().equals(discard)) {
-			new Menu(currGame);
+			new Menu(currGame, currGame.getScores());
 			this.dispose();
 		}
 	}

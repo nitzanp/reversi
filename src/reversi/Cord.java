@@ -1,6 +1,8 @@
 package reversi;
 
-public class Cord {
+import java.io.Serializable;
+
+public class Cord implements Serializable {
 	private int i;
 	private int j;
 

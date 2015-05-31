@@ -1,6 +1,8 @@
 package reversi;
 
-public enum Disk {
+import java.io.Serializable;
+
+public enum Disk implements Serializable {
 	BLACK, WHITE, NONE;
 
 	public Disk getOpposite() {

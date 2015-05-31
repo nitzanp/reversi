@@ -1,6 +1,9 @@
 package reversi;
 
-public abstract class Player {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public abstract class Player implements Serializable {
 
 	private int num;
 

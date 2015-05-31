@@ -1,8 +1,12 @@
 package reversi;
 
+import java.io.Serializable;
 import java.util.Vector;
 
-public class Computer extends Player  {
+import javax.swing.Timer;
+
+@SuppressWarnings("serial")
+public class Computer extends Player implements Serializable  {
 
 	private Disk disk;
 	private int score;
@@ -59,6 +63,7 @@ public class Computer extends Player  {
 	}
 
 	public void play(Board board) {
+
 		Cell cellToPut = searchForMove(board);
 		if (cellToPut != null)
 			cellToPut.makeMove();	
