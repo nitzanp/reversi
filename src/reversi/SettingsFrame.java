@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,6 +19,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 
 public class SettingsFrame extends JFrame implements ActionListener {
 
@@ -36,18 +38,19 @@ public class SettingsFrame extends JFrame implements ActionListener {
 	private JRadioButton player2Human;
 	private JRadioButton player2Computer;
 	private ButtonGroup player2Group;
-	private ScoreTable scores;
+	ImageIcon computerIcon;
+	ImageIcon humanIcon;
 
-	public SettingsFrame(Game game, ScoreTable scores) {
+	public SettingsFrame(Game game) {
 		super("Settings");
 		this.currGame = game;
-		this.scores = scores;
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setLayout(new GridLayout(5, 1));
 		String path = this.getClass().getClassLoader().getResource("").getPath();
 		ImageIcon img = new ImageIcon(path + "image.png");
+		computerIcon = new ImageIcon(path + "computer.png");
+		humanIcon = new ImageIcon(path + "human.png");
 		this.setIconImage(img.getImage());
-
 
 		SpinnerNumberModel heightModel = new SpinnerNumberModel(Settings.instance().getBoardHeight(), 4, 10, 1);
 		SpinnerNumberModel widthModel = new SpinnerNumberModel(Settings.instance().getBoardWidth(), 4, 14, 1);
@@ -55,21 +58,21 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		widthSpinner = new JSpinner(widthModel);
 		JPanel sizePane = makeSizePanel(heightSpinner, widthSpinner);
 
-		player1Name = new JTextField();
-		player1Name.setColumns(10);
-		player1Name.setText(Settings.instance().getPlayer1Name());
+		String name1 = Settings.instance().getPlayer1Name();
+		name1 = (name1.equals("Player1")) ? name1 + " name" : name1;
+		player1Name = new JTextField(name1);
 
-		player2Name = new JTextField();
-		player2Name.setColumns(10);
-		player2Name.setText(Settings.instance().getPlayer2Name());
+		String name2 = Settings.instance().getPlayer2Name();
+		name2 = (name2.equals("Player2")) ? name2 + " name" : name2;
+		player2Name = new JTextField(name2);
 
 		boolean is1Computer = Settings.instance().get1IsComputer();
 
-		player1Human = new JRadioButton("Human");
+		player1Human = new JRadioButton();
 		player1Human.setActionCommand("player1Human");
 		player1Human.setSelected(!is1Computer);		
 
-		player1Computer = new JRadioButton("Computer");
+		player1Computer = new JRadioButton();
 		player1Computer.setActionCommand("player1Computer");
 		player1Computer.setSelected(is1Computer);
 
@@ -81,11 +84,11 @@ public class SettingsFrame extends JFrame implements ActionListener {
 
 		boolean is2Computer = Settings.instance().get2IsComputer();
 
-		player2Human = new JRadioButton("Human");
+		player2Human = new JRadioButton();
 		player2Human.setActionCommand("player2Human");
 		player2Human.setSelected(!is2Computer);			
 
-		player2Computer = new JRadioButton("Computer");
+		player2Computer = new JRadioButton();
 		player2Computer.setActionCommand("player2Computer");
 		player2Computer.setSelected(is2Computer);
 
@@ -107,7 +110,7 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		getContentPane().add(save);
 		getContentPane().add(discard);
 
-		setSize(300, 300);
+		setSize(200, 330);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
@@ -117,7 +120,7 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		JPanel tPane = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		tPane.setMaximumSize(new Dimension(250, 50));
 		tPane.setMinimumSize(new Dimension(250, 50));
-		tPane.setAlignmentX(Component.LEFT_ALIGNMENT);
+		tPane.setAlignmentX(Component.CENTER_ALIGNMENT);
 		JLabel label1 = new JLabel("Board size:");
 		JLabel label2 = new JLabel("*");
 		tPane.add(label1);
@@ -134,8 +137,16 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		tPane.setMinimumSize(new Dimension(250, 50));
 
 		tPane.add(name, BorderLayout.NORTH);
-		tPane.add(human, BorderLayout.WEST);
-		tPane.add(computer, BorderLayout.EAST);
+		
+		JPanel compPane = new JPanel(new FlowLayout());
+		compPane.add(computer);
+		compPane.add(new JLabel(computerIcon));
+		tPane.add(compPane, BorderLayout.WEST);
+
+		JPanel humanPane = new JPanel(new FlowLayout());
+		humanPane.add(human);
+		humanPane.add(new JLabel(humanIcon));
+		tPane.add(humanPane, BorderLayout.EAST);
 
 		return tPane;
 	}
@@ -157,16 +168,13 @@ public class SettingsFrame extends JFrame implements ActionListener {
 			Settings.instance().set1IsComputer(player1IsComputer);
 			Settings.instance().set2IsComputer(player2IsComputer);
 			
-			new Menu(null, scores);
-			
-			if (this.scores != null)
-				this.scores.setVisible(false);
-			scores = new ScoreTable(player1, player2);
+			new Menu(null);
+
 			this.dispose();
 		}
 
 		if (e.getSource().equals(discard)) {
-			new Menu(currGame, currGame.getScores());
+			new Menu(currGame);
 			this.dispose();
 		}
 	}
