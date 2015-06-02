@@ -217,7 +217,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
 		}	    
 		else {
 			Player winner = (player1.getScore() > player2.getScore()) ? player1 : player2;
-			String winnerName = (winner.equals(player1)) ? Settings.instance().getPlayer1Name() : Settings.instance().getPlayer2Name();
+			String winnerName = (winner.equals(player1)) ? player1.getName() : player2.getName();
 			msg = winnerName + " WINS!"; 			//TODO- add points? align to center
 		}
 

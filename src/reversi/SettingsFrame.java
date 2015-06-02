@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,11 +18,10 @@ import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
 
+@SuppressWarnings("serial")
 public class SettingsFrame extends JFrame implements ActionListener {
 
-	private static final long serialVersionUID = 1L;
 
 	private Game currGame;
 	private JSpinner heightSpinner;
