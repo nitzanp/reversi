@@ -44,7 +44,7 @@ public class SettingsFrame extends JFrame implements ActionListener {
 		this.currGame = game;
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setLayout(new GridLayout(5, 1));
-		String path = this.getClass().getClassLoader().getResource("").getPath();
+		String path = "images//";
 		ImageIcon img = new ImageIcon(path + "image.png");
 		computerIcon = new ImageIcon(path + "computer.png");
 		humanIcon = new ImageIcon(path + "human.png");

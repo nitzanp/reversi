@@ -88,7 +88,7 @@ public class Cell implements MouseListener, Serializable{
 	}
 
 	public void setIconByDisk(Disk disk) {
-		String path = this.getClass().getClassLoader().getResource("").getPath(); //TODO need to check if works in every computer
+		String path = "images//";
 		String BLACK_PIC = path + "black.png";
 		String WHITE_PIC = path + "white.png";
 

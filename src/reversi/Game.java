@@ -41,8 +41,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
 	public Game(Player player1, Player player2) {
 		super("Game");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		String path = this.getClass().getClassLoader().getResource("").getPath();
-		ImageIcon img = new ImageIcon(path + "image.png");
+		ImageIcon img = new ImageIcon("images//image.png");
 		this.setIconImage(img.getImage());
 
 		int height = Settings.instance().getBoardHeight();
@@ -172,7 +171,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
 
 		String name = (currPlayer == player1) ? Settings.instance().getPlayer1Name() : Settings.instance().getPlayer2Name();
 
-		dialog.add(new JLabel(name + " have no valid moves!", SwingConstants.CENTER), BorderLayout.CENTER);
+		dialog.add(new JLabel(name + " has no valid moves!", SwingConstants.CENTER), BorderLayout.CENTER);
 		JButton ok = new JButton("OK");
 		ok.addActionListener(new ActionListener() {
 			@Override
@@ -210,7 +209,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
 
 	public void endGame() {
 		String msg; 
-		String pic = this.getClass().getClassLoader().getResource("").getPath() + "win.png";
+		String pic = "images//win.png";
 		
 		if (player1.getScore() == player2.getScore()) {
 			msg = "It's a TIE!";
@@ -297,10 +296,8 @@ public class Game extends JFrame implements ActionListener, Serializable {
 		}
 	}
 	private void saveGame() {
-		String path = this.getClass().getClassLoader().getResource("").getPath(); //TODO need to check if works in every computer
-
 		try {
-			FileOutputStream fout = new FileOutputStream(path + "\\savedGame.sav");
+			FileOutputStream fout = new FileOutputStream("\\savedGame.sav");
 			ObjectOutputStream oos = new ObjectOutputStream(fout);
 			oos.writeObject(this);
 			oos.close();

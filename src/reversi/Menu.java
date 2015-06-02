@@ -31,8 +31,7 @@ public class Menu extends JFrame implements ActionListener {
 
 		super("MainMenu");
 		this.game = game;
-		String path = this.getClass().getClassLoader().getResource("").getPath();
-		ImageIcon img = new ImageIcon(path + "image.png");
+		ImageIcon img = new ImageIcon("images//image.png");
 		this.setIconImage(img.getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new GridLayout(5, 1));
@@ -65,7 +64,6 @@ public class Menu extends JFrame implements ActionListener {
 		load.setFont(load.getFont().deriveFont(22.0f));
 		settings.setFont(settings.getFont().deriveFont(22.0f));
 		exitGame.setFont(exitGame.getFont().deriveFont(22.0f));
-
 
 
 		// Add all objects to Content Pane
@@ -121,10 +119,8 @@ public class Menu extends JFrame implements ActionListener {
 	}
 
 	private Game loadGame(){
-		String path = this.getClass().getClassLoader().getResource("").getPath();
-
 		try {
-			FileInputStream fin = new FileInputStream(path + "\\savedGame.sav");
+			FileInputStream fin = new FileInputStream("\\savedGame.sav");
 			ObjectInputStream in = new ObjectInputStream(fin);
 			try {
 				game =  (Game) in.readObject();

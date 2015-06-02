@@ -105,7 +105,7 @@ public class Board extends JPanel implements Serializable {
 	}
 
 	public boolean isInBounds(Cord cord) {
-		return cord.getI() > -1 && cord.getI() < height && cord.getJ() > -1 && cord.getI() < width;
+		return cord.getI() > -1 && cord.getI() < height && cord.getJ() > -1 && cord.getJ() < width;
 	}
 
 	public Cell getCellByCord(Cord cord) {
