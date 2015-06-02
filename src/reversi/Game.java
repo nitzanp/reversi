@@ -21,9 +21,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+@SuppressWarnings("serial")
 public class Game extends JFrame implements ActionListener, Serializable {
 	 
-	private static final long serialVersionUID = 1L;
 	private Player currPlayer;
 	private Board board;
 	private JButton newGame;
@@ -71,7 +71,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
 		this.player1 = loadedGame.player1;
 		this.player2 = loadedGame.player2;
 		this.currPlayer = loadedGame.currPlayer;
-
+		
 		gameInit();
 
 		if (loadedGame.currPlayer.isComputer()) 
@@ -304,7 +304,6 @@ public class Game extends JFrame implements ActionListener, Serializable {
 			ObjectOutputStream oos = new ObjectOutputStream(fout);
 			oos.writeObject(this);
 			oos.close();
-		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
