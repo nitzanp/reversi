@@ -1,4 +1,4 @@
-package reversi;
+package settings;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -18,6 +18,9 @@ import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+
+import reversi.Game;
+import reversi.Menu;
 
 @SuppressWarnings("serial")
 public class SettingsFrame extends JFrame implements ActionListener {

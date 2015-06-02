@@ -1,4 +1,4 @@
-package reversi;
+package settings;
 
 public class Settings {
 

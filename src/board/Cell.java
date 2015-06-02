@@ -1,4 +1,4 @@
-package reversi;
+package board;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -10,6 +10,10 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+
+import reversi.Game;
+import services.Cord;
+import services.Disk;
 
 @SuppressWarnings("serial")
 public class Cell implements MouseListener, Serializable{

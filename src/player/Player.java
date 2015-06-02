@@ -1,6 +1,10 @@
-package reversi;
+package player;
 
 import java.io.Serializable;
+
+import board.Board;
+import services.Disk;
+import settings.Settings;
 
 @SuppressWarnings("serial")
 public abstract class Player implements Serializable {

@@ -21,6 +21,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import board.Board;
+import board.Cell;
+import player.Computer;
+import player.Human;
+import player.Player;
+import services.Disk;
+import settings.Settings;
+
 @SuppressWarnings("serial")
 public class Game extends JFrame implements ActionListener, Serializable {
 	 
@@ -217,7 +225,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
 		else {
 			Player winner = (player1.getScore() > player2.getScore()) ? player1 : player2;
 			String winnerName = (winner.equals(player1)) ? player1.getName() : player2.getName();
-			msg = winnerName + " WINS!"; 			//TODO- add points? align to center
+			msg = winnerName + " WINS!"; 		
 		}
 
 		final JDialog dialog = new JDialog(this, msg, true);
@@ -226,6 +234,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
 
 		JLabel text = new JLabel(msg, SwingConstants.CENTER);
 		text.setFont(text.getFont().deriveFont(40.0f));
+		text.setForeground(Color.RED);
 		dialog.add(text, BorderLayout.NORTH);
 		dialog.add(new JLabel(new ImageIcon(pic)), BorderLayout.EAST);
 		gameEnded = new JButton("BACK TO MENU");
@@ -295,9 +304,10 @@ public class Game extends JFrame implements ActionListener, Serializable {
 			}
 		}
 	}
+	
 	private void saveGame() {
 		try {
-			FileOutputStream fout = new FileOutputStream("\\savedGame.sav");
+			FileOutputStream fout = new FileOutputStream("saved\\savedGame.sav");
 			ObjectOutputStream oos = new ObjectOutputStream(fout);
 			oos.writeObject(this);
 			oos.close();
@@ -322,6 +332,7 @@ public class Game extends JFrame implements ActionListener, Serializable {
 			new Menu(this);	
 			this.setVisible(false);
 		}
+		
 		if (e.getSource().equals(save)) {
 			saveGame();
 		}

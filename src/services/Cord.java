@@ -1,4 +1,4 @@
-package reversi;
+package services;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package reversi;
+package board;
 
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -8,6 +8,11 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JPanel;
+
+import reversi.Game;
+import services.Cord;
+import services.Direction;
+import services.Disk;
 
 @SuppressWarnings("serial")
 public class Board extends JPanel implements Serializable {
@@ -155,7 +160,7 @@ public class Board extends JPanel implements Serializable {
 		return new Vector<Cell>();
 	}
 
-	Vector<Cell> getCorners() {
+	public Vector<Cell> getCorners() {
 		Vector<Cell> corners = new Vector<Cell>();
 		corners.add(allCells.get(0).get(0));
 		corners.add(allCells.get(0).get(width-1));
@@ -164,7 +169,7 @@ public class Board extends JPanel implements Serializable {
 		return corners;
 	}
 
-	Vector<Cell> getEdges() {
+	public Vector<Cell> getEdges() {
 		Vector<Cell> edges = new Vector<Cell>();
 		edges.addAll(allCells.get(0).values());
 		edges.addAll(allCells.get(height-1).values());
@@ -175,7 +180,7 @@ public class Board extends JPanel implements Serializable {
 		return edges;
 	}
 
-	Vector<Cell> getInnerCells() {
+	public Vector<Cell> getInnerCells() {
 		Vector<Cell> inners = new Vector<Cell>();
 		for (int i = 1; i < height-1; i++) {
 			for (int j = 1; j < width-1; j++) {

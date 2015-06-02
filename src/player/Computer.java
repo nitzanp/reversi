@@ -1,7 +1,11 @@
-package reversi;
+package player;
 
 import java.io.Serializable;
 import java.util.Vector;
+
+import board.Board;
+import board.Cell;
+import services.Disk;
 
 
 @SuppressWarnings("serial")
@@ -70,7 +74,6 @@ public class Computer extends Player implements Serializable  {
 		if (cellToPut != null)
 			cellToPut.makeMove();	
 	}
-
 	
 }
 

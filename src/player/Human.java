@@ -1,6 +1,8 @@
-package reversi;
+package player;
 
 import java.io.Serializable;
+
+import services.Disk;
 
 @SuppressWarnings("serial")
 public class Human extends Player implements Serializable{
@@ -31,5 +33,4 @@ public class Human extends Player implements Serializable{
 		return false;
 	}
 	
-
 }

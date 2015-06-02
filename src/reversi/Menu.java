@@ -17,6 +17,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import player.Computer;
+import player.Human;
+import player.Player;
+import services.Disk;
+import settings.Settings;
+import settings.SettingsFrame;
+
 @SuppressWarnings("serial")
 public class Menu extends JFrame implements ActionListener {
 
@@ -41,7 +48,6 @@ public class Menu extends JFrame implements ActionListener {
 		this.setLocationRelativeTo(null);
 		this.setBackground(Color.CYAN);
 
-		// Create buttons
 		newGame = new JButton("NEW GAME");
 		resumeGame = new JButton("RESUME GAME");
 		load = new JButton ("LOAD GAME");
@@ -52,7 +58,6 @@ public class Menu extends JFrame implements ActionListener {
 			resumeGame.setEnabled(false);
 		}
 
-		// Add action listeners
 		newGame.addActionListener(this);
 		resumeGame.addActionListener(this);
 		load.addActionListener(this);
@@ -65,8 +70,6 @@ public class Menu extends JFrame implements ActionListener {
 		settings.setFont(settings.getFont().deriveFont(22.0f));
 		exitGame.setFont(exitGame.getFont().deriveFont(22.0f));
 
-
-		// Add all objects to Content Pane
 		getContentPane().add(newGame);
 		getContentPane().add(resumeGame);
 		getContentPane().add(load);
@@ -120,7 +123,7 @@ public class Menu extends JFrame implements ActionListener {
 
 	private Game loadGame(){
 		try {
-			FileInputStream fin = new FileInputStream("\\savedGame.sav");
+			FileInputStream fin = new FileInputStream("saved\\savedGame.sav");
 			ObjectInputStream in = new ObjectInputStream(fin);
 			try {
 				game =  (Game) in.readObject();
